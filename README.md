@@ -404,3 +404,17 @@
     return this.restaurantsRepository.save(newRestaurant);
   }
   ```
+
+- 3.5 Mapped Types
+
+  - entity 와 dto 는 사용하는 곳이 다르고 지정하는 타입이 다르지만 형태는 비슷.
+  - 그렇기에 하나의 파일을 entity 와 dto 에서 쓸 수 있도록 할 수 있다.
+  - 먼저 Mapped Types 를 사용하려면 code-first 를 따라야 하며, 타입은 InputType 이어야 한다.
+  - 상속받는 parent 의 타입이 InputType 이 아닐경우 상속받으며 secode-argument 로 InputType 을 넣어주거나, parent 타입에 InputType 을 설정하고, 해당 InputType 의 isAbstract 를 true 로 하여 사용할 수 있다.
+  - 상속받을 때 모든 값을 상속받을 필요는 없기 때문에 Partial, Pick, Omit, Intersection, Composition 등을 활용해 필요한 형태로 상속받을 수 있다.
+
+  - 3.6 Optional Types and Columns
+
+    - nullable 한 값은 nullable 설정
+    - default 를 설정하려면 default 설정
+    - 해당 값은 graphql schema 와 database column 에 모두 지정 가능하다. (각 명칭은 조금씩 다를 수 있다.)
