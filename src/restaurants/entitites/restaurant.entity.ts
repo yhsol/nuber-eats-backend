@@ -1,10 +1,13 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsString, IsBoolean, Length } from 'class-validator';
 
 /**
  * entity for graphql and typeorm both.
  * so, it used in schema and database.
  */
+
+@InputType({ isAbstract: true })
 @ObjectType() // for graphql
 @Entity() // for typeorm
 export class Restaurant {
