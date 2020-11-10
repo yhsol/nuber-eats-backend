@@ -312,6 +312,95 @@
     ```
 
     - 사용 process
+
       - module 에서 imports: repository, providers: service 설정
       - service 에서 repository 를 constructor 에서 inject 하여 repository 를 사용해 로직 작성
       - resolver 에서 service 를 constructor 에 가져와서 service 에 정의 된 로직을 사용.
+
+      - restaurants.module.ts
+
+      ```ts
+      import { Module } from '@nestjs/common';
+      import { TypeOrmModule } from '@nestjs/typeorm';
+      import { Restaurant } from './entitites/restaurant.entity';
+      import { RestaurantResolver } from './restaurants.resolver';
+      import { RestaurantService } from './restaurants.service';
+
+      @Module({
+        imports: [TypeOrmModule.forFeature([Restaurant])],
+        providers: [RestaurantResolver, RestaurantService],
+      })
+      export class RestaurantsModule {}
+      ```
+
+      - restaurants.service.ts
+
+      ```ts
+      import { Injectable } from '@nestjs/common';
+      import { InjectRepository } from '@nestjs/typeorm';
+      import { Repository } from 'typeorm';
+      import { Restaurant } from './entitites/restaurant.entity';
+
+      @Injectable()
+      export class RestaurantService {
+        constructor(
+          @InjectRepository(Restaurant)
+          private readonly restaurants: Repository<Restaurant>,
+        ) {}
+        getAll(): Promise<Restaurant[]> {
+          return this.restaurants.find();
+        }
+      }
+      ```
+
+      - restaurants.resolver.ts
+
+      ```ts
+      import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+      import { CreateRestaurantDto } from './dtos/create-restaurant.dto';
+      import { Restaurant } from './entitites/restaurant.entity';
+      import { RestaurantService } from './restaurants.service';
+
+      @Resolver(_ => Restaurant)
+      export class RestaurantResolver {
+        constructor(private readonly restaurantService: RestaurantService) {}
+        @Query(_ => [Restaurant])
+        restaurants(): Promise<Restaurant[]> {
+          return this.restaurantService.getAll();
+        }
+
+        @Mutation(_ => Boolean)
+        createRestaurant(
+          @Args() createRestaurantDto: CreateRestaurantDto,
+        ): boolean {
+          console.log('createRestaurantDto: ', createRestaurantDto);
+          return true;
+        }
+      }
+      ```
+
+      - repository 만들고, repository 를 써서 service 에서 로직 작성하고, service 의 로직을 resolver 에서 사용하며, 해당 repository, service, resolver 를 사용할 module 에서 통합하여 구성한다.
+
+- 3.3 Recap
+
+  - check again!
+
+- 3.4 Create Restaurant
+
+  - typeorm 의 create, save
+  - create 는 typescript 쪽의 작업. database 를 건드리지 않고, class 를 말그대로 '생성'한다.
+  - save 는 '생성'된 데이터를 database 에 저장한다.
+  - create 할 때는 각 property 를 각각 설정해주거나, create 할 때 필요한 property 와 dto 의 구조가 같다면 dto 를 그대로 create 에 넣어줘도 된다.
+  - create 하고 나면 this.restaurantsRepository.save(newRestaurant) 와 같이 생성 된 데이터를 save 에 넣어 database 에 저장한다.
+  - 이 때 save 를 return 하게 되는데 return type 은 Promise 이다.
+
+  - restaurants.service.ts
+
+  ```ts
+    createRestaurant(createRestaurantDto: CreateRestaurantDto) {
+    const newRestaurant = this.restaurantsRepository.create(
+      createRestaurantDto,
+    );
+    return this.restaurantsRepository.save(newRestaurant);
+  }
+  ```
