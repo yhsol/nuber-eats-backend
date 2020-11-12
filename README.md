@@ -425,3 +425,9 @@
   - createRestaurant 의 dto 를 정의할 때 Restaurant 를 Partial 로 가져왔었는데 이런식으로 Restaurant 자체를 Partial 로 할 경우 id 역시 nullable 이 된다.
   - 그렇기 때문에 createRestaurantDto 를 extends 해서 UpdateRestaurantInputType 을 만들고 그 아래에서 UpdateRestaurantDto 를 만들어서 id 와 위에서 만든 UpdateRestaurantInputType 을 설정한다.
   - 해당 타입을 통해 updateRestaurant Mutation 에서 updateRestaurantDto 하나의 args 설정으로 해결 할 수 있다.
+
+- 3.8 Update Restaurant part Two
+
+  - dto 가 만들어졌으면 service 에 메서드 작성.
+  - service 의 메서드를 resolver 에 연결.
+  - update 메서드는 두가지 arguments 를 받는 데, 첫번째 인자를 사용해 update 할 대상을 찾고, 두번째 인자로 전달하는 객체의 정보를 업데이트.
