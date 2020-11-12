@@ -413,8 +413,15 @@
   - 상속받는 parent 의 타입이 InputType 이 아닐경우 상속받으며 secode-argument 로 InputType 을 넣어주거나, parent 타입에 InputType 을 설정하고, 해당 InputType 의 isAbstract 를 true 로 하여 사용할 수 있다.
   - 상속받을 때 모든 값을 상속받을 필요는 없기 때문에 Partial, Pick, Omit, Intersection, Composition 등을 활용해 필요한 형태로 상속받을 수 있다.
 
-  - 3.6 Optional Types and Columns
+- 3.6 Optional Types and Columns
 
-    - nullable 한 값은 nullable 설정
-    - default 를 설정하려면 default 설정
-    - 해당 값은 graphql schema 와 database column 에 모두 지정 가능하다. (각 명칭은 조금씩 다를 수 있다.)
+  - nullable 한 값은 nullable 설정
+  - default 를 설정하려면 default 설정
+  - 해당 값은 graphql schema 와 database column 에 모두 지정 가능하다. (각 명칭은 조금씩 다를 수 있다.)
+
+- 3.7 Update Restaurant part One
+
+  - update restaurant 의 args 의 경우 create restaurant 와 비슷하지만 id 를 required 로 받아야 한다.
+  - createRestaurant 의 dto 를 정의할 때 Restaurant 를 Partial 로 가져왔었는데 이런식으로 Restaurant 자체를 Partial 로 할 경우 id 역시 nullable 이 된다.
+  - 그렇기 때문에 createRestaurantDto 를 extends 해서 UpdateRestaurantInputType 을 만들고 그 아래에서 UpdateRestaurantDto 를 만들어서 id 와 위에서 만든 UpdateRestaurantInputType 을 설정한다.
+  - 해당 타입을 통해 updateRestaurant Mutation 에서 updateRestaurantDto 하나의 args 설정으로 해결 할 수 있다.
