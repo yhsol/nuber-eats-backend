@@ -450,7 +450,24 @@
     - role - Column
 
 - 4.2 User Resolver and Service
+
   - user.resolver.ts, user.service.ts 생성
   - service 는 repositoy 필요 -> users.module.ts 에 User(entity) import. -> service 의 constructor 에서 InjectRepository 하여 사용.
   - resolver 의 constructor 에서 UsersService 를 가져와서 사용.
   - users.module.ts 의 providers 에 UsersService, UsersResolver 등록.
+
+- 4.3 Create Account Mutation part One
+  - user.entity.ts
+    - UserEntity 를 graphql object 로 만들기 위해 ObjectType 설정 추가.
+    - InputType({ isAbstract: true }) 추가
+  - user.entity.ts, core.entity.ts 에 Field 추가
+  - reolver 에 Mutation 생성 - createAccount
+  - Mutation 메서드의 input 으로 사용할 Input 을 만들기 위해 dto 파일 생성.
+  - create-account.dto.ts
+    - CreateAccountInput
+      - PickType 사용
+      - 첫번째 자리에 사용할 entity 를 입력하고 그 entity 중에서 사용할 요소를 두번째 자리에서 pcik 해서 사용.
+    - CreateAccountOutput
+      - 말그대로 output. error 와 ok 를 설정
+  - createAccount 의 Mutation return 값을 CreateAccountOutput 으로 설정하고,
+    사용하는 Args 의 타입을 CreateAccountInput 으로 설정하여 사용.
