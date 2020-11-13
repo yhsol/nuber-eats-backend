@@ -431,3 +431,13 @@
   - dto 가 만들어졌으면 service 에 메서드 작성.
   - service 의 메서드를 resolver 에 연결.
   - update 메서드는 두가지 arguments 를 받는 데, 첫번째 인자를 사용해 update 할 대상을 찾고, 두번째 인자로 전달하는 객체의 정보를 업데이트.
+
+- 4.0 User Module Introduction
+
+  - nest g module users
+  - app.module.ts 에 자동으로 추가 됨.
+  - users 폴더에 entities 폴더 생성 -> user.entity.ts 파일 생성
+  - id, createdAt, updatedAt 는 여러 곳에서 사용될 것이기 때문에 반복을 피해가 위해 나중에 작업. email, password, role(client | owner | delivery) 먼저 작업.
+  - id, createdAt, updatedAt 은 common 모듈을 만들어서 구현. 전체 application 에서 공유하여 사용.
+  - common 폴더 -> core.entity.ts 파일 생성 -> CoreEntity 를 만들어서 id, createdAt, updatedAt 작성
+  - User 모듈에서 CoreEntity 를 extends 해서 사용.
