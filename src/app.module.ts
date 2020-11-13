@@ -7,7 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Restaurant } from './restaurants/entitites/restaurant.entity';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
-import { User } from './users/entities/user.entity';
+import { UserEntity } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import { User } from './users/entities/user.entity';
       database: process.env.POSTGRES_DATABASE,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: true,
-      entities: [User],
+      entities: [UserEntity],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,

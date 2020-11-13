@@ -441,3 +441,16 @@
   - id, createdAt, updatedAt 은 common 모듈을 만들어서 구현. 전체 application 에서 공유하여 사용.
   - common 폴더 -> core.entity.ts 파일 생성 -> CoreEntity 를 만들어서 id, createdAt, updatedAt 작성
   - User 모듈에서 CoreEntity 를 extends 해서 사용.
+  - entity
+    - id - PrimaryGenerateColumn
+    - createdAt - CreateDateColumn
+    - udpatedAt - UpdateDateColumn
+    - email - Column
+    - password - Column
+    - role - Column
+
+- 4.2 User Resolver and Service
+  - user.resolver.ts, user.service.ts 생성
+  - service 는 repositoy 필요 -> users.module.ts 에 User(entity) import. -> service 의 constructor 에서 InjectRepository 하여 사용.
+  - resolver 의 constructor 에서 UsersService 를 가져와서 사용.
+  - users.module.ts 의 providers 에 UsersService, UsersResolver 등록.

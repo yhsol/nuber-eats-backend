@@ -4,7 +4,7 @@ import { Column, Entity } from 'typeorm';
 type UserRole = 'client' | 'owner' | 'delevery';
 
 @Entity()
-export class User extends CoreEntity {
+export class UserEntity extends CoreEntity {
   @Column()
   email: string;
 
