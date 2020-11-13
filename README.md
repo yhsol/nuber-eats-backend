@@ -457,6 +457,7 @@
   - users.module.ts 의 providers 에 UsersService, UsersResolver 등록.
 
 - 4.3 Create Account Mutation part One
+
   - user.entity.ts
     - UserEntity 를 graphql object 로 만들기 위해 ObjectType 설정 추가.
     - InputType({ isAbstract: true }) 추가
@@ -471,3 +472,23 @@
       - 말그대로 output. error 와 ok 를 설정
   - createAccount 의 Mutation return 값을 CreateAccountOutput 으로 설정하고,
     사용하는 Args 의 타입을 CreateAccountInput 으로 설정하여 사용.
+
+- 4.4 Create Account Mutation part Two
+
+  - user role 을 enum 으로 변경
+
+    - enum 을 만들고 registerEnumType(UserRole, { name: 'UserRole' }); 도 설정
+    - Column 에도 enum 을 인식시켜줘야 함.
+
+    ```ts
+      @Column({ type: 'enum', enum: UserRole })
+      @Field(_ => UserRole)
+      role: UserRole;
+    ```
+
+    - users.service.ts
+      - createAccount
+      - async 함수
+      - args 로 CreateAccountInput 사용
+      - try/catch
+      - 존재하는 유저인지 확인하고, 존재하지 않는다면 create 하고, save!
