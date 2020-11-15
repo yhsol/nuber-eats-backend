@@ -512,3 +512,8 @@
   - typeorm 의 listener 를 사용. 제공하는 메서드 중 @BeforeInsert() 를 사용.
   - typeorm listener: Any of your entities can have methods with custom logic that listen to specific entity events. You must mark those methods with special decorators depending on what event you want to listen to.
   - bcrypt 사용
+
+- 4.8 Log In part One
+  - dto 의 mutation output 을 common 으로 분리.
+  - LoginOutput 의 경우 추가로 token 에 대한 Field 생성.
+  - login.dto.ts -> PickType 사용하여 User 에서 "email", "password" 필드를 가져와서 사용.
