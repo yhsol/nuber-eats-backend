@@ -501,7 +501,14 @@
 - 실패라면 return { ok: false, error }, 성공이라면 return { ok: true }
 
 - 4.6 An Alternative Error
+
   - ok, error 다루는 방법
   - Promise<{ ok: boolean; error?: string }> 와 같은 형태로 return 의 형태를 통일.
   - 추후 data 를 return 할 경우 data property 를 추가해서 사용하면 될 듯.
   - 추후 이런 return 타입을 공통으로 쓸 수 있게 따로 빼 두어도 좋을 듯.
+
+- 4.7 Hashing Passwords
+
+  - typeorm 의 listener 를 사용. 제공하는 메서드 중 @BeforeInsert() 를 사용.
+  - typeorm listener: Any of your entities can have methods with custom logic that listen to specific entity events. You must mark those methods with special decorators depending on what event you want to listen to.
+  - bcrypt 사용
