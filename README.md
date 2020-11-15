@@ -492,3 +492,10 @@
       - args 로 CreateAccountInput 사용
       - try/catch
       - 존재하는 유저인지 확인하고, 존재하지 않는다면 create 하고, save!
+
+- 4.5 Create Account Mutation part Three
+
+  - service 에서 error 를 직접 정의. (throw Error 와 같은 형태로 error 를 표시하는 것이 아닌 직접 에러에 대해 명시하고 return 함. -> Go 의 패턴 차용)
+  - resolver 에서 해당 error 를 확인하고, return 값이 있다면 에러 처리, 없다면 성공으로 판단.
+
+- 실패라면 return { ok: false, error }, 성공이라면 return { ok: true }
