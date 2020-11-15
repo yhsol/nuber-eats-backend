@@ -45,4 +45,14 @@ export class User extends CoreEntity {
       throw new InternalServerErrorException();
     }
   }
+
+  async checkPassword(plainPassword: string): Promise<boolean> {
+    try {
+      const ok = await bcrypt.compare(plainPassword, this.password);
+      return ok;
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException();
+    }
+  }
 }

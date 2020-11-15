@@ -514,6 +514,53 @@
   - bcrypt 사용
 
 - 4.8 Log In part One
+
   - dto 의 mutation output 을 common 으로 분리.
   - LoginOutput 의 경우 추가로 token 에 대한 Field 생성.
   - login.dto.ts -> PickType 사용하여 User 에서 "email", "password" 필드를 가져와서 사용.
+
+- 4.9 Log In part Two
+
+  - service 에 login function 정의
+
+    ```
+      /**
+       *
+       * TODO:
+       * 1. find the user with the email
+       * 2. check if the password is correct
+       * 3. make a JWT and give it to the user
+       */
+    ```
+
+    - email, password 를 받고, ok, error?, token? 을 return.
+    - email 과 findOne 을 통해 user 가 존재하는지 확인.
+    - password
+
+      - hash 는 한방향 string -> hasehd string
+      - 반대로 풀지는 못함.
+      - 그렇지만 같은 string 의 경우 같은 hashed string 이 됨.
+      - 그러므로 비교를 위해 string 으로 들어온 password 를 hash 해서 hash 된 상태로 저장되어 있는 database 의 password 와 비교.
+      - entity 에 checkPassword 메서드 생성.
+      - string password 를 받아서 bcrypt 의 compare 를 사용해 비교하고 결과를 return.
+
+      ```ts
+        async checkPassword(plainPassword: string): Promise<boolean> {
+          try {
+            const ok = await bcrypt.compare(plainPassword, this.password);
+            return ok;
+          } catch (error) {
+            console.error(error);
+            throw new InternalServerErrorException();
+          }
+        }
+      ```
+
+      - service 에서 user 를 찾고, user entity 에 속해있는 (위에 정의한) checkPassword 를 사용하여 password 검증.
+
+      ```ts
+      const user = await this.usersRepository.findOne({ email });
+      const passwordCorrect = await user.checkPassword(password);
+      ```
+
+      - 해당 결과에 따라 return 값 변경하여 return.
