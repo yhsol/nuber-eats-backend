@@ -467,7 +467,7 @@
   - create-account.dto.ts
     - CreateAccountInput
       - PickType 사용
-      - 첫번째 자리에 사용할 entity 를 입력하고 그 entity 중에서 사용할 요소를 두번째 자리에서 pcik 해서 사용.
+      - 첫번째 자리에 사용할 entity 를 입력하고 그 entity 중에서 사용할 요소를 두번째 자리에서 pick 해서 사용.
     - CreateAccountOutput
       - 말그대로 output. error 와 ok 를 설정
   - createAccount 의 Mutation return 값을 CreateAccountOutput 으로 설정하고,
@@ -479,6 +479,16 @@
 
     - enum 을 만들고 registerEnumType(UserRole, { name: 'UserRole' }); 도 설정
     - Column 에도 enum 을 인식시켜줘야 함.
+
+    ```ts
+    enum UserRole {
+      Client,
+      Owner,
+      Delevery,
+    }
+
+    registerEnumType(UserRole, { name: 'UserRole' });
+    ```
 
     ```ts
       @Column({ type: 'enum', enum: UserRole })
