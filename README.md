@@ -564,3 +564,7 @@
       ```
 
       - 해당 결과에 따라 return 값 변경하여 return.
+
+- 5.0 Introduction to Authentication
+  - nestjs 에서 제공하는 jwt passport 를 사용해도 됨.
+  - 해당 프로젝트에서는 직접 jwt 를 다룸.
