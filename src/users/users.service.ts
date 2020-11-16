@@ -44,8 +44,7 @@ export class UsersService {
   /**
    *
    * TODO:
-   * 1. check if the password is correct
-   * 2. make a JWT and give it to the user
+   * 1. make a JWT and give it to the user
    */
   async login({
     email,
@@ -71,7 +70,7 @@ export class UsersService {
       const token = jwt.sign({ id: user.id }, this.config.get('SECRET_KEY'));
       return {
         ok: true,
-        token: 'testtoken',
+        token,
       };
     } catch (error) {
       console.error(error);

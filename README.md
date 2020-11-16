@@ -581,6 +581,7 @@
   - 해당 프로젝트에서는 직접 jwt 를 다룸.
 
 - 5.1 Generating JWT
+
   - jsonwebtoken 사용
   - app.module.ts
     - ConfigModule 에 SECRET_KEY 설정
@@ -588,6 +589,18 @@
   - users.service.ts
     - token return.
     - token 의 secret 을 설정할 때, process.env 로 읽어와도 되지만 ConfigModule 에 설정했기 때문에 suers.module.ts 에서 ConfigService 를 imports 해서 사용.
+    - app.module.ts 에 설정한 ConfigModule 설정을 ConfigService 로 사용할 수 있는 것 인듯.
     - users.service.ts 에서 User 를 Inject 했기 때문에 ConfigService 도 constructor 안에서 config: ConfigService 와 같은 식으로 가져와서 사용.
       - private readonly config: ConfigService
       - this.config.get("SECRET_KEY")
+
+- 5.2 JWT and Modules
+
+  - token 은 비밀을 유지하지 않음. 로그인 후 생성 된 token 을 jwt.io 에 넣어보면 token 이 가지고 있는 정보를 그대로 보여줌.
+  - 그렇기 때문에 token module 을 따로 생성.
+
+  - nest module
+    - Static Module / Dynamic Module
+      - Static Module 은 설정이 포함되어있지 않음.
+      - Dynamic Module 은 forRoot 등의 설정이 된 Module.
+      - Dynamic Module 로 만들어서 설정을 할 수 있지만 Dynamic Module 은 결국 Static Module 이 됨.
