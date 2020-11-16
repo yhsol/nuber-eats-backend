@@ -576,5 +576,18 @@
       - 해당 결과에 따라 return 값 변경하여 return.
 
 - 5.0 Introduction to Authentication
+
   - nestjs 에서 제공하는 jwt passport 를 사용해도 됨.
   - 해당 프로젝트에서는 직접 jwt 를 다룸.
+
+- 5.1 Generating JWT
+  - jsonwebtoken 사용
+  - app.module.ts
+    - ConfigModule 에 SECRET_KEY 설정
+    - SECRET_KEY 는 randomkeygen 에서 Keys 가져와서 env 에 설정하여 사용.
+  - users.service.ts
+    - token return.
+    - token 의 secret 을 설정할 때, process.env 로 읽어와도 되지만 ConfigModule 에 설정했기 때문에 suers.module.ts 에서 ConfigService 를 imports 해서 사용.
+    - users.service.ts 에서 User 를 Inject 했기 때문에 ConfigService 도 constructor 안에서 config: ConfigService 와 같은 식으로 가져와서 사용.
+      - private readonly config: ConfigService
+      - this.config.get("SECRET_KEY")
