@@ -604,3 +604,17 @@
       - Static Module 은 설정이 포함되어있지 않음.
       - Dynamic Module 은 forRoot 등의 설정이 된 Module.
       - Dynamic Module 로 만들어서 설정을 할 수 있지만 Dynamic Module 은 결국 Static Module 이 됨.
+
+- 5.3 JWT Module part One
+
+  - jwt 를 보강하기 위해 module 을 만들고,
+    해당 module 을 service 에서 JwtService 와 같이 쓰려는 듯.
+  - jwt module 을 만들고, 설정 추가.
+  - module 을 처음 생성하면 static module. 이걸 dynamic module 로 만들기 위해서 해당 module 에 작업을 해줘야 함. (static forRoot() 등을 해당 module 안에 만들어줘야 함.)
+  - module 을 service 에서 그냥 service 로 가져올 수 있는 줄 알았는데 그게 아니고 service 를 생성해야 함. (nest g service jwt)
+  - service 를 만들고 module 에서 exports, providers 해줘야 함.
+
+  - module 이 여러곳에서 쓰인다면 사용하는 module 에서 계속 imports 하는 것이 아닌 global 에서 설정할 수 있음. isGlobal 설정.
+    module 자체에 Global() 설정을 할 수 있음.
+    Global() 설정이 되어 있다면 사용시에 imports 하지 않아도 됨.
+    (예: app.module.ts 에 설정 되어 있는 ConfigModule. ConfigModule 을 사용할 때 사용하는 module 에서 imports 를 하지 않아도 됨.)
