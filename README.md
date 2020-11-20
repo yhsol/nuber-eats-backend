@@ -618,3 +618,48 @@
     module 자체에 Global() 설정을 할 수 있음.
     Global() 설정이 되어 있다면 사용시에 imports 하지 않아도 됨.
     (예: app.module.ts 에 설정 되어 있는 ConfigModule. ConfigModule 을 사용할 때 사용하는 module 에서 imports 를 하지 않아도 됨.)
+
+- 5.4 JWT Module part Two
+
+  - module 을 Global 로 만들면 어디서든 imports 없이 사용 가능.
+  - app.module.ts 에는 등록해줘야 함.
+
+  - jwt 에 대한 interface 생성
+
+    - 생성한 interface 는 jwt module 의 forRoot 가 받는 인자(여기서는 options)의 타입을 정의함.
+
+  - JwtService 에 인자 등의 데이터 (여기서는 options) 를 전달하기 위해 providers 사용.
+
+  ```ts
+  import { DynamicModule, Global, Module } from '@nestjs/common';
+  import { CONFIG_OPTIONS } from './jwt.constants';
+  import { JwtModuleOptions } from './jwt.interfaces';
+  import { JwtService } from './jwt.service';
+
+  @Module({})
+  @Global()
+  export class JwtModule {
+    static forRoot(options: JwtModuleOptions): DynamicModule {
+      return {
+        module: JwtModule,
+        exports: [JwtService],
+        providers: [
+          {
+            provide: CONFIG_OPTIONS,
+            useValue: options,
+          },
+          JwtService,
+        ],
+      };
+    }
+  }
+  ```
+
+  - providers 로 전달하고 나면, service 의 constructor 에서 받아서 Inject 해주면 됨.
+  ```ts
+  constructor(@Inject(CONFIG_OPTIONS)
+  private readonly options: JwtModuleOptions
+  ) {
+    console.log(options)
+  }
+  ```
