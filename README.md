@@ -666,5 +666,83 @@
   ```
 
 - 5.5 JWT Module part Three
+
   - jwt.sign 부분을 jwt.setvice 로 옮겨서 users.service 에서 가져와서 사용하는 것으로 변경.
   - users.service 에서 jwtService.sign 을 쓸 때 object 구조로 사용해서 여러 곳에서 필요에 따라 사용하게 할 수도 있고, 특정 요소만 (예를들어 user.id) 전달해서 특정 조건에만 사용하게 만들 수도 있음. 니꼬는 user.id 만 전달하도록 했고, 나는 object 구조 유지.
+
+- 5.6 Middlewares in NestJS
+
+  - token 을 통해 User 정보 알아내고, return 하기
+  - middleware 사용
+
+    - client 에서 요청을 보내면, 요청을 받고, 요청 처리 후에 nest() 함수 호출
+    - middleware 에서 token 을 가져간 다음, 그 token 을 가진 사용자를 찾을 것.
+
+  - jwt.middleware.ts
+
+    - NestMiddleware 를 implements 해서 사용.
+    - implements
+      - extends 와 다르다.
+      - implements 는 interface. 즉 implements 를 쓰는 class 가 interface 처럼 행동해야 한다는 것.
+    - NestMiddleware 를 implements 한 뒤에 express 에서 제공하는 Request, Response, NextFunction 사용.
+    - Request 의 header 등을 읽고, Response 한 뒤에, NextFunction 호출
+
+    - middleware 를 한 App 에만 설치해서 사용할 수도 있고, AppModule 에 설치해서 여러 곳에서 쓸 수도 있다.
+
+      - AppModule 에 설치
+
+        - AppModule 에 NestModule 을 implements 로 상속.
+        - NestModule 에서 필요로 하는 configure 설정 및 arguments, apply function 작성
+        - forRoutes 를 지정해 어떤 경로, routes, 어떤 method 에 이 middleware 를 사용할지를 지정할 수 있다.
+        - exclude 를 사용하면 특정 routes 를 제외해줌.
+
+        ```ts
+        export class AppModule implements NestModule {
+          configure(consumer: MiddlewareConsumer) {
+            consumer.apply(JwtMiddleware);
+          }
+        }
+        ```
+
+        - Inject 등의 기능을 사용하지 않는다면 function 으로 만들어도 된다.
+
+        ```ts
+        import { NestMiddleware } from '@nestjs/common';
+        import { NextFunction, Request, Response } from 'express';
+
+        // export class JwtMiddleware implements NestMiddleware {
+        //   use(req: Request, res: Response, next: NextFunction) {
+        //     console.log(req.headers);
+        //     next();
+        //   }
+        // }
+
+        export function JwtMiddleware(
+          req: Request,
+          res: Response,
+          next: NextFunction,
+        ) {
+          console.log(req.headers);
+          next();
+        }
+        ```
+
+        - main.ts 에 사용해서 전체 어플리케이션에서 사용할 수도 있다.
+
+        ```ts
+        import { ValidationPipe } from '@nestjs/common';
+        import { NestFactory } from '@nestjs/core';
+        import { AppModule } from './app.module';
+        import { JwtMiddleware } from './jwt/jwt.middleware';
+
+        async function bootstrap() {
+          const app = await NestFactory.create(AppModule);
+          app.useGlobalPipes(new ValidationPipe());
+          app.use(JwtMiddleware);
+          await app.listen(3000);
+        }
+        bootstrap();
+        ```
+
+        - 전체 어플리케이션에서 사용하고 싶다면 main.ts 의 bootstrap 안에서 사용.
+        - routes 별로 관리해서 사용하고 싶다면 AppModule 에서 consumer 를 사용해 통제.
