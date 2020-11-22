@@ -13,11 +13,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    private readonly config: ConfigService,
     private readonly jwtService: JwtService,
-  ) {
-    this.jwtService.hello();
-  }
+  ) {}
 
   // createAccount
   async createAccount({
@@ -69,7 +66,8 @@ export class UsersService {
         };
       }
 
-      const token = jwt.sign({ id: user.id }, this.config.get('SECRET_KEY'));
+      // const token = jwt.sign({ id: user.id }, this.config.get('SECRET_KEY'));
+      const token = this.jwtService.sign({ id: user.id });
       return {
         ok: true,
         token,

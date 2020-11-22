@@ -656,6 +656,7 @@
   ```
 
   - providers 로 전달하고 나면, service 의 constructor 에서 받아서 Inject 해주면 됨.
+
   ```ts
   constructor(@Inject(CONFIG_OPTIONS)
   private readonly options: JwtModuleOptions
@@ -663,3 +664,7 @@
     console.log(options)
   }
   ```
+
+- 5.5 JWT Module part Three
+  - jwt.sign 부분을 jwt.setvice 로 옮겨서 users.service 에서 가져와서 사용하는 것으로 변경.
+  - users.service 에서 jwtService.sign 을 쓸 때 object 구조로 사용해서 여러 곳에서 필요에 따라 사용하게 할 수도 있고, 특정 요소만 (예를들어 user.id) 전달해서 특정 조건에만 사용하게 만들 수도 있음. 니꼬는 user.id 만 전달하도록 했고, 나는 object 구조 유지.
