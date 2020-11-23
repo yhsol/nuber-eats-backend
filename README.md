@@ -699,7 +699,10 @@
         ```ts
         export class AppModule implements NestModule {
           configure(consumer: MiddlewareConsumer) {
-            consumer.apply(JwtMiddleware);
+            consumer.apply(JwtMiddleware).forRoutes({
+              path: '/graphql',
+              method: RequestMethod.ALL,
+            });
           }
         }
         ```
@@ -746,3 +749,17 @@
 
         - 전체 어플리케이션에서 사용하고 싶다면 main.ts 의 bootstrap 안에서 사용.
         - routes 별로 관리해서 사용하고 싶다면 AppModule 에서 consumer 를 사용해 통제.
+
+- 5.7 JWT Middleware
+
+  - users repository 를 쓰기 위해 JwtMiddleware 는 class 로 다시 전환.
+  - main.ts 에서 app.use() 를 통해 app.use(JwtMiddleware) 와 같이 사용하는 것도 middleware 가 function 으로 구현됐을 때만 가능. -> middleware 사용도 AppModule 로 다시 전환.
+  - jwt 의 verify 사용
+
+    - decode - verify
+      - decode 는 payload 를 반환하지만 signature 를 verify 하지는 않는다.
+      - verify 는 암호 해독된 token 을 준다.
+
+  - jwt.middleware 에서 dependency injection 을 위해 Injectable 설정.
+
+  - Service 를 Dependency Injection 해서 사용하려면 해당 Service 를 갖고있는 module 에서 exports 해줘야 함.
