@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateAccountInput,
   CreateAccountOutput,
@@ -17,8 +17,8 @@ export class UsersResolver {
   }
 
   @Query(_ => User)
-  me() {
-    return console.log('me');
+  me(@Context() context) {
+    return console.log('-----context:\n ', context.user);
   }
 
   @Mutation(_ => CreateAccountOutput)

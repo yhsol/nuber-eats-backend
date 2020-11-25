@@ -763,3 +763,23 @@
   - jwt.middleware 에서 dependency injection 을 위해 Injectable 설정.
 
   - Service 를 Dependency Injection 해서 사용하려면 해당 Service 를 갖고있는 module 에서 exports 해줘야 함.
+
+- 5.8 GraphQL Context
+
+  - jwt.middleware.ts 에서 req["user"] 에 user 정보를 담았기 때문에 해당 req 정보를 사용하기위해 graphql context 사용
+
+  ```ts
+  GraphQLModule.forRoot({
+    autoSchemaFile: true,
+    context: ({ req }) => ({ user: req['user'] }),
+  }),
+  ```
+
+  - resolver 에서 해당 context 사용
+
+  ```ts
+  @Query(_ => User)
+  me(@Context() context) {
+    return console.log('-----context:\n ', context.user);
+  }
+  ```
