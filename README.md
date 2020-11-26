@@ -783,3 +783,15 @@
     return console.log('-----context:\n ', context.user);
   }
   ```
+
+- 5.9 AuthGuard
+  - authorization
+    - AuthGuard
+    - auth module 생성
+      - auth 폴더 안에 auth.guard.ts 파일 생성
+      - guard 는 함수. request 를 다음 단계로 진행할지 말지 결정한다.
+      - middleware 같이 Injectable 사용해서 만든다.
+      - guard class 를 만드는데 CanActivate 를 상속받는다.
+      - CanActivate 는 true 를 return 하면 request 를 진행시키고 false 면 request 를 멈춘다.
+      - AuthGuard 안에 canActivate 함수를 구현한다. 조건에 따라 boolean 값 return.
+      - 그러면 return 되는 boolean 값에 따라 true 이면 request 진행, false 이면 request 를 멈추게 된다.
