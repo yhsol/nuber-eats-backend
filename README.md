@@ -785,6 +785,7 @@
   ```
 
 - 5.9 AuthGuard
+
   - authorization
     - AuthGuard
     - auth module 생성
@@ -795,3 +796,11 @@
       - CanActivate 는 true 를 return 하면 request 를 진행시키고 false 면 request 를 멈춘다.
       - AuthGuard 안에 canActivate 함수를 구현한다. 조건에 따라 boolean 값 return.
       - 그러면 return 되는 boolean 값에 따라 true 이면 request 진행, false 이면 request 를 멈추게 된다.
+
+- 5.10 AuthUser Decorator
+  - users.resolver.ts 안의 me 함수에서 context 로 user 정보를 가져오기 위해 decorator 생성
+    - auth-user.decorator.ts
+      - createParamDecorator 사용
+      - createParamDecorator 은 CustomParamFactory 의 형태를 필요로 하는데 CustomParamFactory 는 첫번째 인자는 unknown 타입의 data, 그 뒤로 context 등이 위치할 수 있다. context 는 ExecutionContext 타입을 지정한다.
+      - 그후 GqlExecutionContext 을 사용해 context 를 생성하고, 생성된 컨텍스트에서 user 정보를 가져와 리턴한다.
+  - 만들어진 authUser decorator 를 me 함수에 params 로 넣어서 authUser 에서 리턴하는 user 를 다시 리턴한다.
