@@ -798,9 +798,90 @@
       - 그러면 return 되는 boolean 값에 따라 true 이면 request 진행, false 이면 request 를 멈추게 된다.
 
 - 5.10 AuthUser Decorator
+
   - users.resolver.ts 안의 me 함수에서 context 로 user 정보를 가져오기 위해 decorator 생성
     - auth-user.decorator.ts
       - createParamDecorator 사용
       - createParamDecorator 은 CustomParamFactory 의 형태를 필요로 하는데 CustomParamFactory 는 첫번째 인자는 unknown 타입의 data, 그 뒤로 context 등이 위치할 수 있다. context 는 ExecutionContext 타입을 지정한다.
       - 그후 GqlExecutionContext 을 사용해 context 를 생성하고, 생성된 컨텍스트에서 user 정보를 가져와 리턴한다.
   - 만들어진 authUser decorator 를 me 함수에 params 로 넣어서 authUser 에서 리턴하는 user 를 다시 리턴한다.
+
+- 5.11 Recap
+
+  - authentication work proces
+
+    - tl;dr
+
+      - header 에 token 을 보냄
+      - token 을 decrypt, verify 하는 middleware 를 거쳐
+      - request object 에 user 를 추가
+      - 그리고 request object 가 graphql context 안으로 들어가게 되고,
+      - guard 가 graphql context 를 찾아 user 가 있는지 없는지에 따라 true, false 를 return.
+      - guard 에 의해 request 가 통과되면 resolver 에 decorator 를 사용
+      - decorator 는 graphql context 에서 찾은 user 와 같은 user 를 찾으려고 함.
+      - 그 user 를 return.
+
+    - part1
+      - header 에 token 을 보냄
+      - header 는 http thing.
+      - to intercept http thing -> make middleware
+      - middleware 는 header 를 가져다가 우리가 만든 jwtService.verify() 를 사용
+      - 여기서 id 를 찾게되면 우리가 만든 userService 사용해 해당 id 를 가진 user 를 찾는다.
+      - userService 는 typeorm 의 findOne 함수를 쓰는 findById function 을 갖고 있다.
+      - 그리고 db 에서 user 를 찾으면 그 user 를 request object 에 붙여서 보낸다.
+      - middleware 를 가장 먼저 만나기 때문에 middleware 가 원하는대로 request object 를 바꿀 수 있다.
+      - 그러면 middleware 에 의해 바뀐 request object 를 모든 resolver 에서 쓸 수 있다.
+      - 만약 token 이 없거나 에러가 있다면, 아니면 token 으로 user 를 찾을 수 없다면 request 에 어떤 것도 붙이지 않는다.(즉 middleware 가 request object 를 수정하지 않고 에러만 출력함.)
+
+  - part2
+
+    - app.module.ts 에서 context 를 보면, apollo server 의 context 나 graphql 의 context 는 모든 resolver 에 정보를 보낼 수 있는 property 이다.
+    - context 의 호출 조건 (모든 request?) - 2:48
+    - context 에서 function 을 만들면 그 function 이 request object 를 줄 것.
+    - 먼저 JwtMiddleware 를 거치고, GraphQlModule 안의 graphql context 에 request user 를 보냄.
+    - users.resolver.ts
+
+      - guard
+
+        - guard 는 CanActivate 를 상속받아 canActivate 를 구현하여 생성.
+        - canActivate 함수는 true 나 false 를 return.
+        - true 를 return 하면 request 진행, flase 를 return 하면 request 를 중지 시킴.
+        - canActivate 에서 사용되는 context 는 nestjs 의 ExecutionContext.
+        - ExecutionContext 를 가져다가 GqlExucutionContext 로 바꿈.
+
+          ```ts
+          @Injectable()
+          export class AuthGuard implements CanActivate {
+            canActivate(context: ExecutionContext) {
+              const gqlContext = GqlExecutionContext.create(
+                context,
+              ).getContext();
+              const user = gqlContext['user'];
+              if (!user) {
+                return false;
+              }
+              return true;
+            }
+          }
+          ```
+
+        - 그러면 여기서 gqlContext 는 app.module.ts 의 GraphqlModule 의 context 와 같다.
+
+        ```ts
+          GraphQLModule.forRoot({
+            autoSchemaFile: true,
+            context: ({ req }) => ({ user: req['user'] }),
+          }),
+        ```
+
+      - 생성한 AuthGuard 를 resolver 에서 필요한 곳에 사용.
+
+      - decorator
+        - guard 를 만들때와 비슷하게 context 를 가져다가 graphql context 를 생성한다.
+        - 그리고 graphql context 에서 user 를 가져오면 user 를 return.
+        - users.resolver.ts 에서 params 자리에 decorator 를 사용하여 return 값 가져와서 사용.
+
+- 5.12 userProfile Mutation
+  - users.resolver.ts
+    - user query 생성
+    - me 에서 id 호출하기 위해 core.entity.ts 의 CoreEntity 에 ObjectType 추가
