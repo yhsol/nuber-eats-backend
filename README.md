@@ -882,6 +882,44 @@
         - users.resolver.ts 에서 params 자리에 decorator 를 사용하여 return 값 가져와서 사용.
 
 - 5.12 userProfile Mutation
+
   - users.resolver.ts
     - user query 생성
     - me 에서 id 호출하기 위해 core.entity.ts 의 CoreEntity 에 ObjectType 추가
+
+- 5.13 updateProfile part One
+
+  - editProfile
+
+    - users.resolver.ts
+      - editProfile Mutation 생성
+      - Input, Output 정의하는 dto 생성
+      ```ts
+      @UseGuards(AuthGuard)
+        @Mutation(_ => EditProfileOutput)
+        async editProfile(
+          @AuthUser() authUser: User,
+          @Args('input') editProfileInput: EditProfileInput,
+        ): Promise<EditProfileOutput> {
+          return;
+        }
+      ```
+
+  - edit-profile.dto.ts
+
+    - Output 은 CoreOutput 사용
+    - Input 은 User 에서 PickType 으로 가져오고, 가져온 것을 PartialType 으로 묶어서 만든다.
+
+  - users.service.ts
+
+    - editProfile
+
+      - 로그인을 한 뒤에야 해당 함수를 호출할 수 있기때문에 따로 database 와 통신해서 확인하는 작업은 생략 -> update() 를 사용할 수 있음
+
+      ```ts
+      async editProfile(userId: number, { email, password }: EditProfileInput) {
+        this.usersRepository.update(userId, { email, password });
+      }
+      ```
+
+      - update 에는 구분자가 될 id 등을 넣고 (여기서는 userId), update 할 partialEntity 를 넣는다.
