@@ -925,5 +925,18 @@
       - update 에는 구분자가 될 id 등을 넣고 (여기서는 userId), update 할 partialEntity 를 넣는다.
 
 - 5.14 updateProfile part Two
+
   - editProfile 에서 update 후에 비밀번호가 hashed 되지 않은 상태로 저장된 것.
     - user.entity.ts 에서 hashPassword 에 정의된 데코레이터가 BeforeInsert 만 있었기 때문. BeforeUpdate 데코레이터 추가.
+    - 이것으로 해결 안됨! -> BeforeUpdate hook 을 부르지 못하는 문제. 아래에서 이어서 작업.
+
+- 5.15 updateProfile part Three
+  - 니꼬가 에러 설명을 좋아하는 이유
+    - "나는 에러가 나타나면 설명하는 걸 좋아해. 그래야 고칠 수 있고 왜 이러는지 이해할 수 있으니까."
+    - 에러가 난다면 이런 자세로 접근하는 것도 좋겠다. 정리하고, 설명해보고, 고치고!
+  - BeforeUpdate 가 호출되지 않음.
+    - 설명
+      - users repository 에서 this.users.update() 를 사용 중
+      - update 메서드는 빠르고 효율적으로 query 를 update 함. 하지만 entity 가 있는지 없는지는 확인하지 않는다. 이 말은 우리가 직접 entity 를 update 하고 있지 않다는 것. 그저 database 에 query 를 보낼 뿐이다. 그래서 user entity 에 있는 BeforeUpdate 를 부르지 못하는 것. BeforeUpdate 는 특정 entity 를 update 해야 부를 수 있는 것.
+      - 이걸 해결하기 위해서 save 메서드 사용. save 는 database 에 있는 모든 entity 를 save 하고 만약 entity 가 database 에 존재하지 않으면 insert 한다. 그렇지 않다면 update 한다.
+      - save 를 사용하기 위해서 먼저 user entity 를 가져온다.

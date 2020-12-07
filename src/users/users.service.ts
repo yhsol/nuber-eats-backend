@@ -86,7 +86,18 @@ export class UsersService {
     return this.usersRepository.findOne({ id });
   }
 
-  async editProfile(userId: number, editProfileInput: EditProfileInput) {
-    this.usersRepository.update(userId, { ...editProfileInput });
+  async editProfile(
+    userId: number,
+    editProfileInput: EditProfileInput,
+  ): Promise<User> {
+    const { email, password } = editProfileInput;
+    const user = await this.usersRepository.findOne(userId);
+    if (email) {
+      user.email = email;
+    }
+    if (password) {
+      user.password = password;
+    }
+    return this.usersRepository.save(user);
   }
 }
