@@ -923,3 +923,7 @@
       ```
 
       - update 에는 구분자가 될 id 등을 넣고 (여기서는 userId), update 할 partialEntity 를 넣는다.
+
+- 5.14 updateProfile part Two
+  - editProfile 에서 update 후에 비밀번호가 hashed 되지 않은 상태로 저장된 것.
+    - user.entity.ts 에서 hashPassword 에 정의된 데코레이터가 BeforeInsert 만 있었기 때문. BeforeUpdate 데코레이터 추가.
