@@ -931,6 +931,7 @@
     - 이것으로 해결 안됨! -> BeforeUpdate hook 을 부르지 못하는 문제. 아래에서 이어서 작업.
 
 - 5.15 updateProfile part Three
+
   - 니꼬가 에러 설명을 좋아하는 이유
     - "나는 에러가 나타나면 설명하는 걸 좋아해. 그래야 고칠 수 있고 왜 이러는지 이해할 수 있으니까."
     - 에러가 난다면 이런 자세로 접근하는 것도 좋겠다. 정리하고, 설명해보고, 고치고!
@@ -940,3 +941,27 @@
       - update 메서드는 빠르고 효율적으로 query 를 update 함. 하지만 entity 가 있는지 없는지는 확인하지 않는다. 이 말은 우리가 직접 entity 를 update 하고 있지 않다는 것. 그저 database 에 query 를 보낼 뿐이다. 그래서 user entity 에 있는 BeforeUpdate 를 부르지 못하는 것. BeforeUpdate 는 특정 entity 를 update 해야 부를 수 있는 것.
       - 이걸 해결하기 위해서 save 메서드 사용. save 는 database 에 있는 모든 entity 를 save 하고 만약 entity 가 database 에 존재하지 않으면 insert 한다. 그렇지 않다면 update 한다.
       - save 를 사용하기 위해서 먼저 user entity 를 가져온다.
+
+- 5.16 Recap
+
+- 6.0 Verification Entity
+
+  - users / enitities / verification.entity.ts 생성
+
+    - Verification
+
+      - InputType, ObjectType, Entity 설장
+      - One-to-one relations
+
+        - A 는 오로지 하나의 B 만 포함하고, B 도 오로지 하나의 A 만 포함하는 것.
+          - 예를들어 하나의 user 는 하나의 verification 을 갖고, 하나의 verification 은 하나의 user 를 갖는 것.
+
+      - typeorm 의 OneToOne 을 사용하며, OneToOne 은 JoinColumn 을 필요로 함.
+
+      - User 로 부터 Verification 에 접근하고 싶다면 이 경우에는 JoinColumn 이 User 쪽에 있어야만 한다. 만약 Verification 으로부터 User 에 접근하고 싶다면 JoinColumn 이 Verification 쪽에 작성되어야 하는 것.
+
+      - user entity 에도 verified 필드를 추가!
+
+        - user 의 email 이 verifiy 됐는지 안 됐는지를 저장하기 위해
+
+      - Verification 을 다 구현했다면 TypeOrmModule 에 추가
