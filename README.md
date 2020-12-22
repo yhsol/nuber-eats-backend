@@ -965,3 +965,26 @@
         - user 의 email 이 verifiy 됐는지 안 됐는지를 저장하기 위해
 
       - Verification 을 다 구현했다면 TypeOrmModule 에 추가
+
+- 6.1 Creating Verifications
+
+  - 유저가 계정을 생성했을 때 (usersService 의 createAccount) verification 도 만들었으면 함. - users.service.ts 에서!
+  - 그러기 위해서 새로운 repository 필요
+  - users.module.ts 로 가서 verification 추가
+  - users.service.ts verification inject!
+  - verification 은 code, user 가 필요
+  - user 는 service 에서 생성한 user 를 넣어주고, code 는 verification.entity.ts 에서 BeforeInsert 데코레이터를 달고 createCode 메서드를 만들어서 Insert 되기 전에 code 를 생성해서, this.code = uuidv4(); 와 같이 넣어주는 것으로 구현
+  - 그러면 service 에서 verification 을 create 하고, save
+
+  ```ts
+  await this.verifications.save(
+    this.verifications.create({
+      user,
+    }),
+  );
+  ```
+
+- 6.2 Verifying User part One
+  - verifying user means:
+    - verification code 를 사용해서 그들의 verification 을 찾는다.
+    - 찾아 낸 다음에는 그걸 지우고 그 다음에 user 에 대한 verify 를 한다.
