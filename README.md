@@ -985,6 +985,21 @@
   ```
 
 - 6.2 Verifying User part One
+
   - verifying user means:
+
     - verification code 를 사용해서 그들의 verification 을 찾는다.
     - 찾아 낸 다음에는 그걸 지우고 그 다음에 user 에 대한 verify 를 한다.
+
+  - users.resolver.ts
+
+    - mutation 추가
+      - verify-email.dto.ts 작성
+      - mutation verifyEmail 작성
+
+  - users.service.ts
+    - async verifyEmail 메서드 작성
+    - 여기서 verification 을 찾음 -> const verification = await verifications.findOne({code})
+    - 그리고 verification 이 있으면 다음 동작을 하는데, 이때 user 정보가 필요하다. 그런데 TypeOrm 은 relations 에 대한 조회를 그냥 해주지 않는다. 비용이 많이 드는 작업이기 때문.
+    - 그렇기 때문에 const verification = await verifications.findOne({code}, {relations: ["user"]}) 와 같은 식으로 명시적으로 요구해야 함.
+    - 이렇게 조회한 user 즉 verification.user.verified 를 true 로 변경하고 저장. this.users.save(verification.user)
