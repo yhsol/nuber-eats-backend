@@ -1003,3 +1003,60 @@
     - 그리고 verification 이 있으면 다음 동작을 하는데, 이때 user 정보가 필요하다. 그런데 TypeOrm 은 relations 에 대한 조회를 그냥 해주지 않는다. 비용이 많이 드는 작업이기 때문.
     - 그렇기 때문에 const verification = await verifications.findOne({code}, {relations: ["user"]}) 와 같은 식으로 명시적으로 요구해야 함.
     - 이렇게 조회한 user 즉 verification.user.verified 를 true 로 변경하고 저장. this.users.save(verification.user)
+
+- 6.3 Verifying User part Two
+
+  - verify 를 하면 password 의 hash 가 바뀌는 문제
+
+    - verify 를 하면 password 의 hash 를 다시 hash 함. -> 로그인 시도 실패
+
+      - users.service.ts 의 verifyEmail 안에서 save 를 한번 더 호출하고 있기 때문
+
+        - user.entity.ts 에서 BeforeUpdate 시에 password 를 hash 하는데 save 는 Update 에 해당하는 메서드여서 다시 hash 가 발생함.
+        - 해결방법
+
+          - part one
+            - verify 할 때 user 객체에서 password 를 select 하지 않는 것. user 객체에서 password 를 제외하고 진행
+            - user.entity.ts 에서 password 의 Column 에 select 옵션을 설정할 수 있음
+            ```ts
+                @Column({ select: false })
+            ```
+            이렇게 되면 user 를 조회했을 때 password 는 제외한 채로 넘어옴.
+          - part two
+            - user.entity.ts 의 hashPassword 에서 Insert 또는 Update 동작에 password 가 존재할 때만 hash 를 진행
+          - part three
+
+            - users.service.ts 의 login 에서 user 를 가져올 때 password 를 select 하고 싶다고 전달해야 함
+
+            ```ts
+            const user = await this.usersRepository.findOne(
+              { email },
+              { select: ['password'] },
+            );
+            ```
+
+            - 여기서 token 에서 사용할 userId 도 select 해줘야 함.
+              그래서 고친 코드는 아래와 같다.
+
+            ```ts
+            const user = await this.usersRepository.findOne(
+              { email },
+              { select: ['id', 'password'] },
+            );
+
+            // token 코드
+            const token = this.jwtService.sign({ id: user.id });
+            ```
+
+          - part four
+            - users.service.ts 의 verifyEmail 에서 save 이후에 return true
+            - users.service.ts, users.resolver.ts 의 verifyEmail 을 try/catch 로 감싸서 작성
+
+    - hashed 된 계정 삭제
+      - 계정을 삭제하려고 하면 verify 가 남아있어서 삭제 안됨
+        - verification.entity.ts 의 user 에 user 가 삭제되었을 때의 동작을 정의
+          - CASCADE
+            - 여기서는 user 를 삭제하면 user 와 연결 된 verification 도 같이 삭제한다는 것
+          ```ts
+                @OneToOne(_ => User, { onDelete: "CASCADE" })
+          ```
