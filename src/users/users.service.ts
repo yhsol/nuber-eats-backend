@@ -7,8 +7,10 @@ import { LoginInput } from './dtos/login.dto';
 import { User } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from 'src/jwt/jwt.service';
-import { EditProfileInput } from './dtos/edit-profile.dto';
+import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { Verification } from './entities/verification.entity';
+import { VerifyEmailOutput } from './dtos/verify-email.dto';
+import { UserProfileOutput } from './dtos/user-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -96,28 +98,40 @@ export class UsersService {
     }
   }
 
-  async findById(id: number): Promise<User> {
-    return this.usersRepository.findOne({ id });
+  async findById(id: number): Promise<UserProfileOutput> {
+    try {
+      const user = await this.usersRepository.findOne({ id });
+      if (user) {
+        return { ok: true, user: user };
+      }
+    } catch (error) {
+      return { ok: false, error: 'User NOt Found' };
+    }
   }
 
   async editProfile(
     userId: number,
     editProfileInput: EditProfileInput,
-  ): Promise<User> {
-    const { email, password } = editProfileInput;
-    const user = await this.usersRepository.findOne(userId);
-    if (email) {
-      user.email = email;
-      user.verified = false;
-      await this.verifications.save(this.verifications.create({ user }));
+  ): Promise<EditProfileOutput> {
+    try {
+      const { email, password } = editProfileInput;
+      const user = await this.usersRepository.findOne(userId);
+      if (email) {
+        user.email = email;
+        user.verified = false;
+        await this.verifications.save(this.verifications.create({ user }));
+      }
+      if (password) {
+        user.password = password;
+      }
+      await this.usersRepository.save(user);
+      return { ok: true };
+    } catch (error) {
+      return { ok: false, error };
     }
-    if (password) {
-      user.password = password;
-    }
-    return this.usersRepository.save(user);
   }
 
-  async verifyEmail(code: string): Promise<boolean> {
+  async verifyEmail(code: string): Promise<VerifyEmailOutput> {
     try {
       const verification = await this.verifications.findOne(
         { code },
@@ -126,12 +140,11 @@ export class UsersService {
       if (verification) {
         verification.user.verified = true;
         this.usersRepository.save(verification.user);
-        return true;
+        return { ok: true };
       }
-      throw new Error();
+      return { ok: false, error: 'Verification Not Found' };
     } catch (error) {
-      console.error(error);
-      return;
+      return { ok: false, error };
     }
   }
 }

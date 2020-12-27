@@ -1060,3 +1060,49 @@
           ```ts
                 @OneToOne(_ => User, { onDelete: "CASCADE" })
           ```
+
+- 6.4
+
+  - 니꼬가 코드를 짜는 방법
+    - 처음에는 코드를 엉망으로 작성. 동작만 하게.
+    - 코드를 다 작성하고, 잘 동작한다면 코드를 한번 깔끔하게 정리해보는 것
+  - 코드 정리
+
+    - resolver
+
+      - mutation
+
+        - try/catch 나 if/else 등의 로직은 기존에는 resolver 등에도 산재해 있었는데, service 에서만 존재하도록 정리.
+        - 기본적으로 resolver 가 할 일은 몇개의 input 을 받고 service 를 return 하는 것. service 로 데이터를 전달하는 것.
+        - 즉 resolver 에는 받는 데이터들, 다루는 데이터들의 내용들 그리고 그것을 service 로 전달하는 로직이 담기게 됨.
+        - 이 과정에서 resolver 에 있는 mutation 함수들은 service 로 연결하는 로직을 return 하는데 이것이 가능한 이유는 브라우저가 함수가 끝나기까지 await 해주기 때문이다.
+          코드로 보는게 이해가 쉬운데 예를들어 바로 return 하는 코드는 아래와 같다.
+
+        ```ts
+            @Mutation(_ => VerifyEmailOutput)
+            verifyEmail(
+              @Args('input') verifyEmailInput: VerifyEmailInput,
+            ): Promise<VerifyEmailOutput> {
+              return this.usersService.verifyEmail(verifyEmailInput.code);
+            }
+        ```
+
+        그리고 이 코드는 아래와 코드와 같은 동작을 한다.
+
+        ```ts
+            @Mutation(_ => VerifyEmailOutput)
+            async verifyEmail(
+              @Args('input') verifyEmailInput: VerifyEmailInput,
+            ): Promise<VerifyEmailOutput> {
+              const { ok, error } = await this.usersService.verifyEmail(
+                verifyEmailInput.code,
+              );
+              return { ok, error };
+            }
+        ```
+
+        명시적으로 작성하려면 아래와 같이 작성하면 좋고, 위의 코드와 같이 작성하더라도 브라우저가 자동으로 await 을 해주기때문에 같은 동작을 수행한다.
+
+        - resolver 는 문지기 같은 역할 (grapqhql 을 쓰기때문에 resolver 가 이 역할을 하는 듯. rest 의 경우 controller 가 이 역할을 하는 듯.)
+          - input 을 받아다가 올바른 service 로 전달하는 일
+        - service 는 이것들을 다루는 로직이 정의된 부분
