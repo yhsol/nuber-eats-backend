@@ -1106,3 +1106,106 @@
         - resolver 는 문지기 같은 역할 (grapqhql 을 쓰기때문에 resolver 가 이 역할을 하는 듯. rest 의 경우 controller 가 이 역할을 하는 듯.)
           - input 을 받아다가 올바른 service 로 전달하는 일
         - service 는 이것들을 다루는 로직이 정의된 부분
+
+- 6.5 Mailgun Setup
+
+  - verification 지우기 작업 먼저
+
+    ```ts
+    // users.service.ts
+    await this.verifications.delete(verification.id);
+    ```
+
+  - 메일 보내기
+    - 이메일 모듈을 먼저 만들어서 그걸로 유저 인증
+  - mailgun 셋업
+
+- 6.6 Mail Module Setup
+
+  - nestjs 커뮤니티에서 만든 mailer 를 사용해도 됨.
+    - 그러면 HTML 을 포함한 템플릿을 사용할 수 있음
+    - 메일을 예쁘게 보내려고 한다면 필요!
+    - 현재 프로젝트에서는 텍스트만 보낼거기 때문에 사용하지 않을 것
+  - mail module
+    - nest generate module mail
+      - mail.module.ts
+        - forRoot 설정
+        - Options (interface) 설정
+        - app module 에 추가, Joi 로 schema 검사
+        - app module 에 추가시에 필요한 요소는 env 에 설정 후 가져와서 등록
+
+- 6.7 Mailgun API
+
+  - JWT 서비스에서 많은 부분을 복붙
+  - mail.service.ts 생성
+  - mail.module.ts 의 providers 에 MailService 설정 하고, exports 에 MailService 설정
+  - mail.service.ts
+
+    - 메일 보내는 함수 작성
+    - node.js 에는 프론트엔드의 fetch 와 같은 기능이 없기 때문에 패키지 사용 - npm i got
+    - api 로 post 리퀘스트 보낼 것
+
+      - Authorization 값으로 mailgun 에서 제공하는 값을 사용하는데, base64 로 변환해서 사용함.
+        - mailgun 에서 제공하는 값은 'api:YOUR_API_KEY'
+        - 방법
+          - 터미널에 node (node 실행)
+          - Buffer.from('api:YOUR_API_KEY').toString('base64')
+          - 위와 같이 하면 base64 로 변환한 string 을 줌
+          - 이게 기본 인증 방식의 룰. 헤더의 기본 형태
+          - 코드에서 사용할 때는 아래와 같이 사용
+          ```ts
+            ${Buffer.from(`api:${this.options.apiKey}`).toString('base64')}
+          ```
+      - form
+        - form 을 맞춰줘야 함
+        - form-data 라이브러리 사용
+        - mailgun 의 cURL 의 form 형식에 맞춰서 구성하면 됨.
+      - this.sendEmail('testing', 'test', '보낼 메일 주소');
+        - NestJS 가 시작할 때 마다 이 함수를 테스트한다는 것
+
+      ```ts
+          import { Injectable, Inject } from '@nestjs/common';
+          import { CONFIG_OPTIONS } from '../common/common.constants';
+          import { MailModuleOptions } from './mail.interfaces';
+          import got from 'got';
+          import * as FormData from 'form-data';
+
+          @Injectable()
+          export class MailService {
+            constructor(@Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions,) {
+              this.sendEmail('testing', 'test', 'loshy244110@gmail.com');
+            }
+          }
+
+          private async sendEmail(subject: string, content: string, to: string) {
+            const form = new FormData();
+            form.append('from', `Excited User <mailgun@${this.options.domain}>`)
+            form.append('to', to);
+            form.append('subject', subject);
+            form.append('text', content);
+            const response = await got(`https://api.mailgun.net/v3/${this.options.domain}/messages`, {
+              headers: {
+                "Authorization": `Basic ${Buffer.from(`api:${this.options.apiKey}`).toString('base64')}`
+              },
+              method: "POST",
+              body: form,
+              },
+            );
+            console.log(response.body);
+          }
+      ```
+
+- 6.8 Beautiful Emails
+  - mailgun 의 template
+    - https://app.mailgun.com/app/sending/domains/sandbox908893656db64abb8b9ab23113a520b8.mailgun.org/templates
+    - template 세팅
+    - mail.service.ts
+      - text 대신에 template 사용
+      ```ts
+      form.append('template', template);
+      ```
+      - template 에 필요한 변수들은 아래와 같이 설정
+      ```ts
+      form.append('v:username', 'USERNAME_VARIABLE');
+      form.append('v:code', 'CODE_VARIABLE');
+      ```
