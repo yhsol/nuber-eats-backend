@@ -1209,3 +1209,27 @@
       form.append('v:username', 'USERNAME_VARIABLE');
       form.append('v:code', 'CODE_VARIABLE');
       ```
+
+- 6.9 Refactor
+  - mail.service.ts
+    - public 메서드 생성
+      - sendVerificationEmail
+       - 여기서 sendEmail 을 실행
+
+  - users.service.ts
+    - mail.module.ts
+      - mail module 을 Global 로 설정
+    - users.service.ts 에서 아래와 같이 가져와서 사용
+    ```ts
+      private readonly mailService: MailService,
+    ```
+    - create, edit 하는 시점에 메일 보내는 함수 실행
+    ```ts
+      const verification = await this.verifications.save(
+                this.verifications.create({ user }),
+              );
+              this.mailService.sendVerificationEmail({
+                email: user.email,
+                code: verification.code,
+              });
+    ```
