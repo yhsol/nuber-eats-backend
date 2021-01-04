@@ -1238,7 +1238,9 @@
     ```
 
 - 7.0 Setting Up Tests
+
   - npm run test:watch
+
     - src/users/users.service.spec.ts 생성
     - 파일의 이름은 상관없지만 'spec' 이라는 부분은 필수!
       - package.json 의 jest 부분을 보면 아래와 같이 명시되어 있음
@@ -1246,12 +1248,15 @@
               "testRegex": ".spec.ts$",
         ```
     - users.service.spec.ts
+
       - describe
         - 여기서 테스트 진행
       - beforeAll
         - 테스트 진행 전에 테스트 모듈 세팅
       - it
+
         - 아래와 같이 작성
+
         ```ts
         it('test name', () => {
           expect(service).toBeDefined();
@@ -1263,3 +1268,72 @@
         it.todo('editProfile');
         it.todo('verifyEmail');
         ```
+
+- 7.1 Mocking
+
+  - jest 의 경로탐색 방식에 따른 에러
+    - package.json 의 jest 에 다음을 추가
+    ```json
+      "moduleNameMapper": {
+        "^src/(.*)$": "<rootDir>/$1"
+      },
+    ```
+  - repository 가 없어서 발생하는 에러
+
+    - Repository 를 Mocking 해서 사용
+    - unit test 이기 때문에 테스트 모듈을 독립적으로 유지하기위해 그 외에 필요한 것들을 mocking 해서 사용
+    - describe 바깥에 mockRepository 생성
+
+    ```ts
+    const mockUserRepository = {
+      findOne: jest.fn(),
+      save: jest.fn(),
+      create: jest.fn(),
+    };
+
+    const mockVerificationRepository = {
+      findOne: jest.fn(),
+      save: jest.fn(),
+      create: jest.fn(),
+      delete: jest.fn(),
+    };
+
+    const mockJwtService = {
+      sign: jest.fn(),
+      verify: jest.fn(),
+    };
+
+    const mockMailService = {
+      // private 메서드는 테스트 제외!
+      sendVerificationEmail: jest.fn(),
+    };
+    ```
+
+    - beforeAll 안에 providers 에 설정
+
+    ```ts
+    beforeAll(async () => {
+      const module = await Test.createTestingModule({
+        providers: [
+          UsersService,
+          {
+            provide: getRepositoryToken(User),
+            useValue: mockUserRepository,
+          },
+          {
+            provide: getRepositoryToken(Verification),
+            useValue: mockVerificationRepository,
+          },
+          {
+            provide: JwtService,
+            useValue: mockJwtService,
+          },
+          {
+            provide: MailService,
+            useValue: mockMailService,
+          },
+        ],
+      }).compile();
+      service = module.get<UsersService>(UsersService);
+    });
+    ```
