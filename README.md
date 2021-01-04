@@ -1196,6 +1196,7 @@
       ```
 
 - 6.8 Beautiful Emails
+
   - mailgun 의 template
     - https://app.mailgun.com/app/sending/domains/sandbox908893656db64abb8b9ab23113a520b8.mailgun.org/templates
     - template 세팅
@@ -1211,10 +1212,12 @@
       ```
 
 - 6.9 Refactor
+
   - mail.service.ts
+
     - public 메서드 생성
       - sendVerificationEmail
-       - 여기서 sendEmail 을 실행
+      - 여기서 sendEmail 을 실행
 
   - users.service.ts
     - mail.module.ts
@@ -1225,11 +1228,38 @@
     ```
     - create, edit 하는 시점에 메일 보내는 함수 실행
     ```ts
-      const verification = await this.verifications.save(
-                this.verifications.create({ user }),
-              );
-              this.mailService.sendVerificationEmail({
-                email: user.email,
-                code: verification.code,
-              });
+    const verification = await this.verifications.save(
+      this.verifications.create({ user }),
+    );
+    this.mailService.sendVerificationEmail({
+      email: user.email,
+      code: verification.code,
+    });
     ```
+
+- 7.0 Setting Up Tests
+  - npm run test:watch
+    - src/users/users.service.spec.ts 생성
+    - 파일의 이름은 상관없지만 'spec' 이라는 부분은 필수!
+      - package.json 의 jest 부분을 보면 아래와 같이 명시되어 있음
+        ```json
+              "testRegex": ".spec.ts$",
+        ```
+    - users.service.spec.ts
+      - describe
+        - 여기서 테스트 진행
+      - beforeAll
+        - 테스트 진행 전에 테스트 모듈 세팅
+      - it
+        - 아래와 같이 작성
+        ```ts
+        it('test name', () => {
+          expect(service).toBeDefined();
+        });
+
+        it.todo('createAccount');
+        it.todo('login');
+        it.todo('findById');
+        it.todo('editProfile');
+        it.todo('verifyEmail');
+        ```
