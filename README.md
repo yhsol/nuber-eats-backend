@@ -1337,3 +1337,9 @@
       service = module.get<UsersService>(UsersService);
     });
     ```
+
+- 7.2 Mocking part Two
+  - unit test 의 개념
+  - 출력물에 대한 테스트가 아닌 각 구성요소, 각 줄에 대한 테스트
+  - Repository 가져오기
+    - 타입스크립트 Partial, Record 사용
