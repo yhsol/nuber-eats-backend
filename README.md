@@ -1350,6 +1350,7 @@
 - 7.4 Recap
 
 - 7.5 createAccount Test part One
+
   - test coverage
     - npm run test:cov
     - test coverage 수정
@@ -1361,3 +1362,5 @@
               ".constants.ts"
             ]
       ```
+
+- 7.6 createAccount Test part Two
