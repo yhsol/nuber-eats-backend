@@ -33,7 +33,6 @@ export class UsersService {
     try {
       const exists = await this.usersRepository.findOne({ email });
       if (exists) {
-        console.error('users.service.ts: already exists!');
         return { ok: false, error: 'There is a user with that email already' };
       }
 
@@ -41,7 +40,6 @@ export class UsersService {
         this.usersRepository.create({ email, password, role }),
       );
 
-      // TODO: logic for verification
       const verification = await this.verifications.save(
         this.verifications.create({
           user,

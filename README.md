@@ -1348,3 +1348,16 @@
 - 7.3 Writing Our First Test
 
 - 7.4 Recap
+
+- 7.5 createAccount Test part One
+  - test coverage
+    - npm run test:cov
+    - test coverage 수정
+      - package.json - 아래 내용 추가
+      ```json
+        "coveragePathIgnorePatterns": [
+              "node_modules",
+              ".entity.ts",
+              ".constants.ts"
+            ]
+      ```
