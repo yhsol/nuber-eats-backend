@@ -51,7 +51,7 @@ export class UsersService {
       });
       return { ok: true };
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return { ok: false, error: "Couldn't create account" };
     }
   }
@@ -93,10 +93,10 @@ export class UsersService {
         token,
       };
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return {
         ok: false,
-        error,
+        error: "Couldn't login",
       };
     }
   }
