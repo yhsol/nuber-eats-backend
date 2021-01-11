@@ -1368,6 +1368,7 @@
 - 7.7 login Test part One
 
 - 7.8 login Test part Two
+
   - mock 으로 만든 module 을 전체 테스트에서 공유하기 때문에 생기는 문제
     - 테스트 전에 beforeAll 을 통해 만든 모듈을 전체 테스트에서 같이 사용하기 때문에 toHaveBeenCalledTimes 와 같은 메서드를 사용할 때 위에서 사용한 호출이 전부 다 같이 카운트 됨.
     - beforeAll -> beforeEach 로 수정
@@ -1376,3 +1377,4 @@
 - 7.9 findById Test
 
 - 7.10 editProfile Test part One
+  - ReturnValue 와 ResolvedValue 의 차이는 promise return 의 여부
