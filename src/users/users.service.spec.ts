@@ -205,6 +205,39 @@ describe('UsersService', () => {
     });
   });
 
-  it.todo('editProfile');
+  describe('editProfile', () => {
+    it('should change eamil', async () => {
+      const oldUser = {
+        email: 'old@test.com',
+        verified: true,
+      };
+      const editProfileArgs = {
+        userId: 1,
+        input: { email: 'new@test.com' },
+      };
+      const newVerification = {
+        code: 'code',
+      };
+      const newUser = {
+        email: editProfileArgs.input.email,
+        verified: false,
+      };
+      usersRepository.findOne.mockResolvedValue(oldUser);
+      verificationRepository.create.mockReturnValue(newVerification);
+      verificationRepository.save.mockResolvedValue(newVerification);
+
+      await service.editProfile(editProfileArgs.userId, editProfileArgs.input);
+
+      expect(usersRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(usersRepository.findOne).toHaveBeenCalledWith(
+        editProfileArgs.userId,
+      );
+
+      // expect(verificationRepository.create).toHaveBeenCalledWith(newUser);
+      // expect(verificationRepository.save).toHaveBeenCalledWith({
+      //   user: newUser,
+      // });
+    });
+  });
   it.todo('verifyEmail');
 });
