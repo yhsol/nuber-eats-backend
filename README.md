@@ -1372,3 +1372,7 @@
     - 테스트 전에 beforeAll 을 통해 만든 모듈을 전체 테스트에서 같이 사용하기 때문에 toHaveBeenCalledTimes 와 같은 메서드를 사용할 때 위에서 사용한 호출이 전부 다 같이 카운트 됨.
     - beforeAll -> beforeEach 로 수정
     - unit test 에서는 beforeEach, end to end test 에서는 beforeAll 을 사용하는 것이 좋을 듯.
+
+- 7.9 findById Test
+
+- 7.10 editProfile Test part One

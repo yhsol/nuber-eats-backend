@@ -103,12 +103,10 @@ export class UsersService {
 
   async findById(id: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.usersRepository.findOne({ id });
-      if (user) {
-        return { ok: true, user: user };
-      }
+      const user = await this.usersRepository.findOneOrFail({ id });
+      return { ok: true, user };
     } catch (error) {
-      return { ok: false, error: 'User NOt Found' };
+      return { ok: false, error: 'User Not Found' };
     }
   }
 
