@@ -1378,3 +1378,4 @@
 
 - 7.10 editProfile Test part One
   - ReturnValue 와 ResolvedValue 의 차이는 promise return 의 여부
+  - test 의 정보를 읽는 방식을 이해할 필요가 있을 듯.

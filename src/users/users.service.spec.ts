@@ -233,10 +233,16 @@ describe('UsersService', () => {
         editProfileArgs.userId,
       );
 
-      // expect(verificationRepository.create).toHaveBeenCalledWith(newUser);
-      // expect(verificationRepository.save).toHaveBeenCalledWith({
-      //   user: newUser,
-      // });
+      // expect(verificationRepository.create).toHaveBeenCalledTimes(1);
+      expect(verificationRepository.create).toHaveBeenCalledWith({
+        user: newUser,
+      });
+      expect(verificationRepository.save).toHaveBeenCalledWith(newVerification);
+
+      expect(mailService.sendVerificationEmail).toHaveBeenCalledWith({
+        email: newUser.email,
+        code: newVerification.code,
+      });
     });
   });
   it.todo('verifyEmail');
