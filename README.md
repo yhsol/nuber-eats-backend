@@ -1377,5 +1377,9 @@
 - 7.9 findById Test
 
 - 7.10 editProfile Test part One
+
   - ReturnValue 와 ResolvedValue 의 차이는 promise return 의 여부
   - test 의 정보를 읽는 방식을 이해할 필요가 있을 듯.
+
+- 7.11 editProfile Test part Two
+  - mockRepository, mockService 등을 함수로 정의 -> 호출시마다 새로운 함수를 생성하기 위함 -> 그러면 toHaveBeenCalledTimes 를 호출했을 때 각각의 케이스에 대한 횟수만 측정할 수 있음.
