@@ -1386,3 +1386,7 @@
   - mockRepository, mockService 등을 함수로 정의 -> 호출시마다 새로운 함수를 생성하기 위함 -> 그러면 toHaveBeenCalledTimes 를 호출했을 때 각각의 케이스에 대한 횟수만 측정할 수 있음.
 
 - 7.12 verifyEmail Test
+
+- 7.13 Conclusions
+
+- 8.0 JWT Service Test Setup
