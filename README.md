@@ -1390,3 +1390,5 @@
 - 7.13 Conclusions
 
 - 8.0 JWT Service Test Setup
+
+- 8.1 JWT Sign Test
