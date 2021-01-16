@@ -1392,3 +1392,5 @@
 - 8.0 JWT Service Test Setup
 
 - 8.1 JWT Sign Test
+
+- 8.2 JWT Verify Test
