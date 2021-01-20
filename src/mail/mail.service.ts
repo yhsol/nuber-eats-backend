@@ -12,7 +12,7 @@ export class MailService {
     private readonly options: MailModuleOptions,
   ) {}
 
-  private async sendEmail({
+  async sendEmail({
     subject,
     template,
     to,
