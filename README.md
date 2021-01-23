@@ -1396,3 +1396,6 @@
 - 8.2 JWT Verify Test
 
 - 8.3 sendVerificationEmail Test
+
+- 8.4 sendEmail Test
+  - form-data 와 같이 class 를 spy 해서 테스트 할 경우 prototype 을 활용할 수 있음. form-data 는 보통 `const form = new FormData();`와 같은 방식으로 쓰는데 이것을 `const formSpy = jest.spyOn(FormData.prototype, 'append');` 와 같은 방식으로 테스트 할 수 있음.
