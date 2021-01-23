@@ -1394,3 +1394,5 @@
 - 8.1 JWT Sign Test
 
 - 8.2 JWT Verify Test
+
+- 8.3 sendVerificationEmail Test
