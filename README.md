@@ -1406,3 +1406,5 @@
   - nest 는 end-to-end testing file 을 가지고 있음
 
 - 9.2 Testing createAccount part One
+
+- 9.3 Testing createAccount part Two
