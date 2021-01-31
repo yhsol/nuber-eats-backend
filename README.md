@@ -1402,4 +1402,7 @@
   - form-data 와 같이 class 를 spy 해서 테스트 할 경우 prototype 을 활용할 수 있음. form-data 는 보통 `const form = new FormData();`와 같은 방식으로 쓰는데 이것을 `const formSpy = jest.spyOn(FormData.prototype, 'append');` 와 같은 방식으로 테스트 할 수 있음.
 
 - 9.0 Setup part One
+
   - nest 는 end-to-end testing file 을 가지고 있음
+
+- 9.2 Testing createAccount part One
