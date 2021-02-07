@@ -12,8 +12,14 @@ jest.mock('got', () => {
 
 const GRAPHQL_ENDPOINT = `/graphql`;
 
+const TEST_USER_DICTIONARY = {
+  email: 'e2etest@test.com',
+  password: '12345',
+};
+
 describe('UserModule (e2e)', () => {
   let app: INestApplication;
+  let jwtToken: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,7 +36,6 @@ describe('UserModule (e2e)', () => {
   });
 
   describe('createAccount', () => {
-    const EMAIL = 'e2etest@test.com';
     it('should create account', () => {
       return request(app.getHttpServer())
         .post(GRAPHQL_ENDPOINT)
@@ -38,7 +43,7 @@ describe('UserModule (e2e)', () => {
           query: `
           mutation {
             createAccount(
-              input: { email: "${EMAIL}", password: "e2etest", role: Client }
+              input: { email: "${TEST_USER_DICTIONARY.email}", password: "${TEST_USER_DICTIONARY.password}", role: Client }
             ) {
               ok
               error
@@ -60,7 +65,7 @@ describe('UserModule (e2e)', () => {
           query: `
         mutation {
           createAccount(
-            input: { email: "${EMAIL}", password: "e2etest", role: Client }
+            input: { email: "${TEST_USER_DICTIONARY.email}", password: "${TEST_USER_DICTIONARY.password}", role: Client }
           ) {
             ok
             error
@@ -75,9 +80,72 @@ describe('UserModule (e2e)', () => {
         });
     });
   });
+
+  describe('login', () => {
+    it('should login with correct credentials', () => {
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .send({
+          query: `
+            mutation {
+              login(input: {
+                email: "${TEST_USER_DICTIONARY.email}",
+                password: "${TEST_USER_DICTIONARY.password}"
+              }) {
+                ok
+                error
+                token
+              }
+            }
+        `,
+        })
+        .expect(200)
+        .expect(res => {
+          const {
+            body: {
+              data: { login },
+            },
+          } = res;
+
+          expect(login.ok).toBe(true);
+          expect(login.error).toBe(null);
+          expect(login.token).toEqual(expect.any(String));
+          jwtToken = login.token;
+        });
+    });
+    it('should not be able to login with wrong credentials', () => {
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .send({
+          query: `
+            mutation {
+              login(input: {
+                email: "${TEST_USER_DICTIONARY.email}",
+                password: "wrong password"
+              }) {
+                ok
+                error
+                token
+              }
+            }
+        `,
+        })
+        .expect(200)
+        .expect(res => {
+          const {
+            body: {
+              data: { login },
+            },
+          } = res;
+
+          expect(login.ok).toBe(false);
+          expect(login.error).toBe('Wrong password');
+          expect(login.token).toBe(null);
+        });
+    });
+  });
   it.todo('userProfile');
   it.todo('me');
-  it.todo('login');
   it.todo('verifyEmail');
   it.todo('editProfile');
 });
