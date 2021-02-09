@@ -158,7 +158,13 @@ describe('UserModule (e2e)', () => {
       userId = user.id;
     });
 
-    it("should see a user's profile", () => {});
+    it("should see a user's profile", () => {
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .send({
+          query: ``,
+        });
+    });
 
     it.todo("should not found user's profile");
   });
