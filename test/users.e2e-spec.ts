@@ -2,7 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 jest.mock('got', () => {
   return {
@@ -19,6 +21,7 @@ const TEST_USER_DICTIONARY = {
 
 describe('UserModule (e2e)', () => {
   let app: INestApplication;
+  let userRepository: Repository<User>;
   let jwtToken: string;
 
   beforeAll(async () => {
@@ -27,6 +30,9 @@ describe('UserModule (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    userRepository = moduleFixture.get<Repository<User>>(
+      getRepositoryToken(User),
+    );
     await app.init();
   });
 
@@ -144,7 +150,16 @@ describe('UserModule (e2e)', () => {
         });
     });
   });
-  it.todo('userProfile');
+
+  describe('userProfile', () => {
+    beforeAll(async () => {
+      console.log(await userRepository.find());
+    });
+
+    it("should see a user's profile", () => {});
+
+    it.todo("should not found user's profile");
+  });
   it.todo('me');
   it.todo('verifyEmail');
   it.todo('editProfile');
