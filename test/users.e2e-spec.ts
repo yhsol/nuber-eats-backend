@@ -152,8 +152,10 @@ describe('UserModule (e2e)', () => {
   });
 
   describe('userProfile', () => {
+    let userId: number;
     beforeAll(async () => {
-      console.log(await userRepository.find());
+      const [user] = await userRepository.find();
+      userId = user.id;
     });
 
     it("should see a user's profile", () => {});
