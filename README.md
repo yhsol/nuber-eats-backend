@@ -1408,3 +1408,7 @@
 - 9.2 Testing createAccount part One
 
 - 9.3 Testing createAccount part Two
+
+- 9.4 Testing login
+
+- 9.5 Testing userProfile
