@@ -1412,3 +1412,5 @@
 - 9.4 Testing login
 
 - 9.5 Testing userProfile
+
+- 9.6 Testing me
