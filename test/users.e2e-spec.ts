@@ -154,6 +154,7 @@ describe('UserModule (e2e)', () => {
   describe('userProfile', () => {
     let userId: number;
     beforeAll(async () => {
+      console.log('find: ', await userRepository.find());
       const [user] = await userRepository.find();
       userId = user.id;
     });
@@ -161,12 +162,70 @@ describe('UserModule (e2e)', () => {
     it("should see a user's profile", () => {
       return request(app.getHttpServer())
         .post(GRAPHQL_ENDPOINT)
+        .set('x-jwt', jwtToken)
         .send({
-          query: ``,
+          query: `
+            {
+              userProfile(userId: ${userId}) {
+                ok
+                error
+                user {
+                  id
+                }
+              }
+            }          
+          `,
+        })
+        .expect(200)
+        .expect(res => {
+          const {
+            body: {
+              data: {
+                userProfile: {
+                  ok,
+                  error,
+                  user: { id },
+                },
+              },
+            },
+          } = res;
+          expect(ok).toBe(true);
+          expect(error).toBe(null);
+          expect(id).toBe(userId);
         });
     });
 
-    it.todo("should not found user's profile");
+    it("should not find user's profile", () => {
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .set('x-jwt', jwtToken)
+        .send({
+          query: `
+            {
+              userProfile(userId: 0) {
+                ok
+                error
+                user {
+                  id
+                }
+              }
+            }          
+          `,
+        })
+        .expect(200)
+        .expect(res => {
+          const {
+            body: {
+              data: {
+                userProfile: { ok, error, user },
+              },
+            },
+          } = res;
+          expect(ok).toBe(false);
+          expect(error).toBe('User Not Found');
+          expect(user).toBe(null);
+        });
+    });
   });
   it.todo('me');
   it.todo('verifyEmail');
