@@ -1418,3 +1418,5 @@
 - 9.7 Testing editProfile
 
 - 9.8 Testing verifyEmail
+
+- 9.9 Conclusions
