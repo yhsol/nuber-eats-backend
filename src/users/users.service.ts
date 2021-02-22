@@ -118,8 +118,17 @@ export class UsersService {
       const { email, password } = editProfileInput;
       const user = await this.usersRepository.findOne(userId);
       if (email) {
+        const exists = await this.usersRepository.findOne({ email });
+        if (exists) {
+          return {
+            ok: false,
+            error: 'There is a user with that email already',
+          };
+        }
+
         user.email = email;
         user.verified = false;
+        await this.verifications.delete({ user: { id: user.id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user }),
         );
@@ -134,7 +143,7 @@ export class UsersService {
       await this.usersRepository.save(user);
       return { ok: true };
     } catch (error) {
-      return { ok: false, error: 'Could not update profile' };
+      return { ok: false, error: error };
     }
   }
 
