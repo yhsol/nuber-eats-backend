@@ -1414,3 +1414,7 @@
 - 9.5 Testing userProfile
 
 - 9.6 Testing me
+
+- 9.7 Testing editProfile
+
+- 9.8 Testing verifyEmail
