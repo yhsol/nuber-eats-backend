@@ -1420,3 +1420,10 @@
 - 9.8 Testing verifyEmail
 
 - 9.9 Conclusions
+
+- 10.0 Restaurant Models
+  - Restaurant Model
+    - name
+    - category
+    - address
+    - coverImage
