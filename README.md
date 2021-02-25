@@ -1422,8 +1422,11 @@
 - 9.9 Conclusions
 
 - 10.0 Restaurant Models
+
   - Restaurant Model
     - name
     - category
     - address
     - coverImage
+
+- 10.1 Relationships and InputTypes
