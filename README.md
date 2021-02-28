@@ -1430,3 +1430,5 @@
     - coverImage
 
 - 10.1 Relationships and InputTypes
+
+- 10.2 createRestaurant part One
