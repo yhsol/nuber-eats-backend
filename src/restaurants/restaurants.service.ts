@@ -6,6 +6,7 @@ import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
 } from './dtos/create-restaurant.dto';
+import { Category } from './entitites/category.entity';
 import { Restaurant } from './entitites/restaurant.entity';
 
 @Injectable()
@@ -13,6 +14,8 @@ export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurantsRepository: Repository<Restaurant>,
+    @InjectRepository(Category)
+    private readonly categories: Repository<Category>,
   ) {}
 
   async createRestaurant(
@@ -23,7 +26,19 @@ export class RestaurantService {
       const newRestaurant = this.restaurantsRepository.create(
         createRestaurantInput,
       );
+      newRestaurant.owner = owner;
       await this.restaurantsRepository.save(newRestaurant);
+      const categoryName = createRestaurantInput.categoryName
+        .trim()
+        .toLowerCase();
+      const categorySlug = categoryName.replace(/ /g, '-');
+      let category = await this.categories.findOne({ slug: categorySlug });
+      if (!category) {
+        category = await this.categories.save(
+          this.categories.create({ name: categoryName, slug: categorySlug }),
+        );
+      }
+      newRestaurant.category = category;
       return {
         ok: true,
       };
