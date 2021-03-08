@@ -484,7 +484,7 @@
     enum UserRole {
       Client,
       Owner,
-      Delevery,
+      Delivery,
     }
 
     registerEnumType(UserRole, { name: 'UserRole' });
@@ -1432,3 +1432,7 @@
 - 10.1 Relationships and InputTypes
 
 - 10.2 createRestaurant part One
+
+- 10.3 createRestaurant part Two
+
+- 10.4 Roles part One
