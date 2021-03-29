@@ -27,7 +27,6 @@ export class RestaurantService {
         createRestaurantInput,
       );
       newRestaurant.owner = owner;
-      await this.restaurantsRepository.save(newRestaurant);
       const categoryName = createRestaurantInput.categoryName
         .trim()
         .toLowerCase();
@@ -39,6 +38,11 @@ export class RestaurantService {
         );
       }
       newRestaurant.category = category;
+      // categoryId 가 db 에 들어가지 않던 문제 해결
+      // await this.restaurantsRepository.save(newRestaurant); 를 newRestaurant.category = category; 전에 함.
+      // 아래로 내리자 잘 들어감.
+      await this.restaurantsRepository.save(newRestaurant);
+
       return {
         ok: true,
       };
