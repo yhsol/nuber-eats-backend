@@ -13,15 +13,19 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
     );
 
+    // 메타데이터가 설정되어 있지 않으면 통과
     if (!roles) return true;
 
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const user: User = gqlContext['user'];
 
+    // user가 없으면 false
     if (!user) return false;
 
+    // 메타데이터가 'Any' 이면 통과
     if (roles.includes('Any')) return true;
 
+    // 메타데이터와 user 의 role 비교
     return roles.includes(user.role);
   }
 }
