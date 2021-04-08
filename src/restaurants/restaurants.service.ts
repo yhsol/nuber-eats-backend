@@ -15,11 +15,6 @@ import { Category } from './entitites/category.entity';
 import { Restaurant } from './entitites/restaurant.entity';
 import { CategoryRepository } from './repository/category.repository';
 
-type CreateOrEditCategory = {
-  craeteOrEditCategoryInput: CreateRestaurantInput | EditRestaurantInput;
-  restaurant: Restaurant;
-};
-
 @Injectable()
 export class RestaurantService {
   constructor(
