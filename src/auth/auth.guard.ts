@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const user: User = gqlContext['user'];
 
-    // user가 없으면 false
+    // 메타데이터가 있는데 user가 없으면 false
     if (!user) return false;
 
     // 메타데이터가 'Any' 이면 통과
