@@ -13,6 +13,7 @@ import {
 } from './dtos/edit-restaurant.dto';
 import { Category } from './entitites/category.entity';
 import { Restaurant } from './entitites/restaurant.entity';
+import { CategoryRepository } from './repository/category.repository';
 
 type CreateOrEditCategory = {
   craeteOrEditCategoryInput: CreateRestaurantInput | EditRestaurantInput;
@@ -24,24 +25,8 @@ export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurantsRepository: Repository<Restaurant>,
-    @InjectRepository(Category)
-    private readonly categories: Repository<Category>,
+    private readonly categories: CategoryRepository,
   ) {}
-
-  async createOrEditCategory(name: string) {
-    const categoryName = name.trim().toLowerCase();
-    const categorySlug = categoryName.replace(/ /g, '-');
-
-    let category = await this.categories.findOne({ slug: categorySlug });
-    if (!category) {
-      category = await this.categories.save(
-        this.categories.create({ name: categoryName, slug: categorySlug }),
-      );
-    }
-
-    return category;
-  }
-
   async createRestaurant(
     owner: User,
     createRestaurantInput: CreateRestaurantInput,
@@ -52,7 +37,7 @@ export class RestaurantService {
       );
       newRestaurant.owner = owner;
 
-      const category = await this.createOrEditCategory(
+      const category = await this.categories.getCreated(
         createRestaurantInput.categoryName,
       );
       newRestaurant.category = category;
@@ -89,12 +74,21 @@ export class RestaurantService {
         };
       }
 
+      let category: Category = null;
       if (restaurant.category) {
-        const category = await this.createOrEditCategory(
+        category = await this.categories.getCreated(
           editRestaurantInput.categoryName,
         );
         restaurant.category = category;
       }
+
+      await this.restaurantsRepository.create([
+        {
+          id: editRestaurantInput.restaurantId,
+          ...editRestaurantInput,
+          ...(category && { category }),
+        },
+      ]);
     } catch (error) {
       return {
         ok: false,
