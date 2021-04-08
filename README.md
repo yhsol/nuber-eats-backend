@@ -1442,3 +1442,5 @@
 - 10.6 Roles Recap
 
 - 10.7 Edit Restaurant part One
+
+- 10.8 Edit Restaurant part Two
