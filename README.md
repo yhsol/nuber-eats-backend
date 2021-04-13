@@ -1444,3 +1444,7 @@
 - 10.7 Edit Restaurant part One
 
 - 10.8 Edit Restaurant part Two
+
+- 10.9 Edit Restaurant part Three
+
+- 10.10 Edit Restaurant Testing

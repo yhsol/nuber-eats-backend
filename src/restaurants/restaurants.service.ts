@@ -70,14 +70,14 @@ export class RestaurantService {
       }
 
       let category: Category = null;
-      if (restaurant.category) {
+      if (editRestaurantInput.categoryName) {
         category = await this.categories.getCreated(
           editRestaurantInput.categoryName,
         );
         restaurant.category = category;
       }
 
-      await this.restaurantsRepository.create([
+      await this.restaurantsRepository.save([
         {
           id: editRestaurantInput.restaurantId,
           ...editRestaurantInput,
