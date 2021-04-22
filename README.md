@@ -1448,3 +1448,5 @@
 - 10.9 Edit Restaurant part Three
 
 - 10.10 Edit Restaurant Testing
+
+- 10.11 Delete Restaurant
