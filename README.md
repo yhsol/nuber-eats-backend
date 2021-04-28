@@ -1450,3 +1450,5 @@
 - 10.10 Edit Restaurant Testing
 
 - 10.11 Delete Restaurant
+
+- 10.12 Categories part One
