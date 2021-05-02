@@ -1452,3 +1452,5 @@
 - 10.11 Delete Restaurant
 
 - 10.12 Categories part One
+
+- 10.13 Categories part Two

@@ -74,6 +74,7 @@ export class CategoryResolver {
   restaurantCount(@Parent() category: Category): Promise<number> {
     return this.restaurantService.countRestaurant(category);
   }
+
   @Query(_ => AllCategoriesOutput)
   allCategories(): Promise<AllCategoriesOutput> {
     return this.restaurantService.allCategories();
