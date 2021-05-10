@@ -170,7 +170,7 @@ export class RestaurantService {
         take: 25,
         skip: (page - 1) * 25,
       });
-      category.restaurants = restaurants;
+      // category.restaurants = restaurants; // restaurant 를 따로 Field 를 만들어서 내보내는 것으로 수정
 
       // total pages
       const totalCategories = await this.countRestaurant(category);
@@ -180,6 +180,7 @@ export class RestaurantService {
         ok: true,
         category,
         totalPages,
+        restaurants,
       };
     } catch (error) {
       return {
