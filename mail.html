@@ -1,0 +1,606 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd](http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd)">
+<html
+  xmlns="[http://www.w3.org/1999/xhtml](http://www.w3.org/1999/xhtml)"
+  xmlns:th="[http://www.w3.org/1999/xhtml](http://www.w3.org/1999/xhtml)"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Gowid</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="[https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&display=swap](https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&display=swap)"
+      rel="stylesheet"
+    />
+    <style type="text/css">
+      body,
+      #bodyTable {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        font-family: 'Noto Sans KR', sans-serif !important;
+      }
+      #bodyTable {
+        padding-top: 40px;
+        padding-right: 0;
+        padding-bottom: 40px;
+        padding-left: 0;
+        background-color: #ffffff;
+      }
+      img,
+      a img {
+        border: 0;
+        outline: none;
+        text-decoration: none;
+      }
+      .imageFix {
+        display: block;
+      }
+      table,
+      td {
+        border-collapse: collapse;
+        font-family: 'Noto Sans KR', sans-serif !important;
+      }
+
+      .ReadMsgBody {
+        width: 100%;
+      }
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
+      body,
+      table,
+      td,
+      p,
+      a,
+      li,
+      blockquote {
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+      .responsive-width {
+        width: 600px;
+      }
+      .reponsive-flex {
+        display: flex;
+        justify-content: center;
+      }
+
+      @media (max-width: 767px) {
+        #bodyTable {
+          padding-top: 28px;
+          padding-right: 16px;
+          padding-bottom: 16px;
+          padding-left: 16px;
+        }
+        .responsive-width {
+          width: 100%;
+        }
+      }
+      @media (min-width: 768px) {
+        .reponsive-flex {
+          display: flex;
+        }
+        .reponsive-margin {
+          /* margin-left: 109px; */
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f8f8f8;">
+    <table
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+      id="bodyTable"
+      style="border-collapse: separate; margin: 0; background-color: #f8f8f8;"
+    >
+      <tr>
+        <td>
+          <table
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+padding-top: 40px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+"
+            class="responsive-width"
+          >
+            <tr>
+              <td>
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="
+border-radius: 16px;
+border: 1px solid #e6e6e6;
+border-collapse: separate;
+background-color: #ffffff;
+padding-top: 32px;
+padding-right: 16px;
+padding-bottom: 32px;
+padding-left: 16px;
+"
+                >
+                  <tr>
+                    <td
+                      style="
+padding-top: 0;
+padding-right: 0;
+padding-bottom: 28px;
+padding-left: 0;
+"
+                    >
+                      <img
+                        src="[https://www.gowid.com/img/gowid-png.png](https://www.gowid.com/img/gowid-png.png)"
+                        alt="gowid"
+                        style="height: 25px; vertical-align: top;"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+border-bottom: 1px solid #e6e6e6;
+padding-top: 0;
+padding-right: 0;
+padding-bottom: 16px;
+padding-left: 0;
+font-family: NotoSansKR;
+font-size: 20px;
+font-weight: 700;
+font-stretch: normal;
+font-style: normal;
+line-height: 1.2;
+letter-spacing: -0.33px;
+color: #333333;
+"
+                    >
+                      고위드 카드 사용자로 초대됐어요!
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 24px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+font-family: NotoSansKR;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      안녕하세요,
+                      <b>${userName}</b>님.<br />
+                      스타트업을 위한 법인카드 서비스를 제공하는 고위드입니다.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 16px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      쉽고 편한 법인카드 경비 제출을 위해
+                      <b>${managerName}</b>님이 회원님을 고위드 앱으로
+                      초대하셨어요.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 16px;
+padding-right: 0;
+padding-bottom: 24px;
+padding-left: 0;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      아래의 앱 다운로드 버튼 또는 Google Play / App Store를
+                      통해 고위드 앱을 다운받으시고 이메일 주소와 임시
+                      비밀번호로 로그인해주세요.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+border-radius: 8px;
+background-color: #e5f5bf;
+padding-top: 24px;
+padding-right: 0;
+padding-bottom: 24px;
+padding-left: 0;
+text-align: center;
+"
+                    >
+                      <b
+                        style="
+font-size: 14px;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                        >임시 비밀번호: ${temporaryPassword}
+                      </b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="reponsive-flex" style="height: 100px;">
+                      <div
+                        class="reponsive-margin"
+                        style="
+                                display: flex;
+                                padding: 16px;
+                                position: relative;
+                                "
+                      >
+                        <a
+                          target="_blank"
+                          rel="noopener"
+                          href="[https://play.google.com/store/apps/details?id=com.gowid.expense](https://play.google.com/store/apps/details?id=com.gowid.expense)"
+                          style="
+                                width: 126px;
+                                height: 100px;
+                                border-radius: 12px;
+                                border: solid 2px #cfcfcf;
+                                background-color: #ffffff;
+                                padding: 14px 16px 0;
+                                text-decoration: none !important;
+                                margin: 0 auto;
+                                box-sizing: border-box;
+                                "
+                        >
+                          <img
+                            src="[https://www.gowid.com/img/app-android-icon.png](https://www.gowid.com/img/app-android-icon.png)"
+                            alt="android"
+                            style="
+                                    width: 24px;
+                                    height: 27px;
+                                    display: block;
+                                    margin: 0 auto;
+"
+                          />
+                          <div style="margin-left: 0px;">
+                            <div
+                              style="
+                                    height: 24px;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    font-stretch: normal;
+                                    font-style: normal;
+                                    line-height: 1.71;
+                                    letter-spacing: -0.18px;
+                                    color: #333333;
+                                    text-align: center;
+                                    "
+                            >
+                              앱 다운로드
+                            </div>
+                            <div
+                              style="
+height: 12px;
+font-size: 10px;
+font-weight: bold;
+font-stretch: normal;
+font-style: normal;
+line-height: 1;
+letter-spacing: -0.15px;
+color: #333333;
+text-align: center;
+"
+                            >
+                              Andriod
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                      <div
+                        style="
+display: flex;
+padding: 16px;
+position: relative;
+"
+                      >
+                        <a
+                          target="_blank"
+                          rel="noopener"
+                          href="[https://apps.apple.com/kr/app/고위드/id1531811924](https://apps.apple.com/kr/app/%EA%B3%A0%EC%9C%84%EB%93%9C/id1531811924)"
+                          style="
+width: 90px;
+height: 82px;
+border-radius: 12px;
+border: solid 2px #cfcfcf;
+background-color: #ffffff;
+padding: 14px 16px 0;
+text-decoration: none !important;
+margin: 0 auto;
+"
+                        >
+                          <img
+                            src="[https://www.gowid.com/img/app-apple-icon.png](https://www.gowid.com/img/app-apple-icon.png)"
+                            alt="iOS"
+                            style="
+width: 24px;
+height: 31px;
+display: block;
+margin: 0 auto;
+"
+                          />
+                          <div style="margin-left: 0px;">
+                            <div
+                              style="
+height: 24px;
+font-size: 14px;
+font-weight: 500;
+font-stretch: normal;
+font-style: normal;
+line-height: 1.71;
+letter-spacing: -0.18px;
+color: #333333;
+text-align: center;
+"
+                            >
+                              앱 다운로드
+                            </div>
+                            <div
+                              style="
+height: 12px;
+font-size: 10px;
+font-weight: bold;
+font-stretch: normal;
+font-style: normal;
+line-height: 1;
+letter-spacing: -0.15px;
+color: #333333;
+text-align: center;
+"
+                            >
+                              iOS
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 24px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      안전한 개인 정보 보호를 위해 첫 로그인 이후 반드시 새
+                      비밀번호로 변경해주세요.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 16px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      감사합니다.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 16px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 0;
+font-size: 14px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 24px;
+letter-spacing: -0.18px;
+color: #333333;
+"
+                    >
+                      고위드 스타트업 카드팀 드림
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+padding-top: 32px;
+padding-right: 0;
+padding-bottom: 32px;
+padding-left: 0;
+"
+              >
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="
+text-align: center;
+font-family: NotoSansKR;
+font-size: 12px;
+font-weight: normal;
+font-stretch: normal;
+font-style: normal;
+line-height: 20px;
+letter-spacing: -0.15px;
+color: #606060;
+"
+                >
+                  <tr>
+                    <td
+                      style="
+padding-top: 4px;
+padding-right: 0;
+padding-bottom: 4px;
+padding-left: 0;
+color: #cfcfcf;
+"
+                    >
+                      <a
+                        href="[https://gowid.com](https://gowid.com/)"
+                        target="_blank"
+                        style="
+color: #606060;
+font-weight: 700;
+text-decoration: none;
+padding-top: 0;
+padding-right: 8px;
+padding-bottom: 0;
+padding-left: 8px;
+"
+                        >(주)고위드</a
+                      >|
+                      <a
+                        [href="mailto:support@gowid.com](mailto:href=%22mailto:support@gowid.com)"
+                        target="_blank"
+                        style="
+color: #333333;
+text-decoration: none;
+padding-top: 0;
+padding-right: 8px;
+padding-bottom: 0;
+padding-left: 8px;
+"
+                        >[support@gowid.com](mailto:support@gowid.com)</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 4px;
+padding-right: 0;
+padding-bottom: 4px;
+padding-left: 0;
+color: #cfcfcf;
+word-break: keep-all;
+"
+                    >
+                      <a
+                        href="[https://gowid.com/support/private](https://gowid.com/support/private)"
+                        target="_blank"
+                        style="
+color: #606060;
+text-decoration: none;
+padding-top: 0;
+padding-right: 8px;
+padding-bottom: 0;
+padding-left: 8px;
+"
+                        >개인정보처리방침</a
+                      >|<a
+                        href="[https://gowid.com/support/terms](https://gowid.com/support/terms)"
+                        target="_blank"
+                        style="
+color: #606060;
+text-decoration: none;
+padding-top: 0;
+padding-right: 8px;
+padding-bottom: 0;
+padding-left: 8px;
+"
+                        >고위드 이용약관</a
+                      >|<a
+                        href="[https://gowid.com/support/unsubscribe](https://gowid.com/support/unsubscribe)"
+                        target="_blank"
+                        style="
+color: #606060;
+text-decoration: none;
+padding-top: 0;
+padding-right: 8px;
+padding-bottom: 0;
+padding-left: 8px;
+"
+                        >수신거부</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+padding-top: 4px;
+padding-right: 0;
+padding-bottom: 4px;
+padding-left: 0;
+"
+                    >
+                      서울특별시 강남구 도산대로 317 호림아트센터 14층
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
