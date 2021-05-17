@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EditProfileInput } from 'src/users/dtos/edit-profile.dto';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Raw, Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 import {
@@ -17,7 +17,12 @@ import {
   EditRestaurantInput,
   EditRestaurantOutput,
 } from './dtos/edit-restaurant.dto';
+import { RestaurantInput, RestaurantOutput } from './dtos/restaurant.dto';
 import { RestaurantsInput, RestaurantsOutput } from './dtos/restaurants.dto';
+import {
+  SearchRestaurantInput,
+  SearchRestaurantOutput,
+} from './dtos/search-restaurant.dto';
 import { Category } from './entitites/category.entity';
 import { Restaurant } from './entitites/restaurant.entity';
 import { CategoryRepository } from './repository/category.repository';
@@ -210,7 +215,58 @@ export class RestaurantService {
     } catch (error) {
       return {
         ok: false,
-        error: "Couldn't find restaurants",
+        error: "Couldn't find Restaurants",
+      };
+    }
+  }
+
+  async findRestaurantById({
+    restaurantId,
+  }: RestaurantInput): Promise<RestaurantOutput> {
+    try {
+      const restaurant = await this.restaurantsRepository.findOne(restaurantId);
+
+      if (!restaurant) {
+        return { ok: false, error: 'Restaurant Not Found' };
+      }
+
+      return {
+        ok: true,
+        results: restaurant,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: "Couldn't find Restaurant",
+      };
+    }
+  }
+
+  async searchRestaurantByName({
+    query,
+    page,
+  }: SearchRestaurantInput): Promise<SearchRestaurantOutput> {
+    try {
+      const [
+        restaurant,
+        totalResults,
+      ] = await this.restaurantsRepository.findAndCount({
+        where: {
+          name: Raw(name => `${name} ILIKE '%${query}%'`),
+        },
+        skip: (page - 1) * 25,
+        take: 25,
+      });
+      return {
+        ok: true,
+        results: restaurant,
+        totalResults,
+        totalPages: Math.ceil(totalResults / 25),
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: `Couldn't find Restaurants By ${query}`,
       };
     }
   }

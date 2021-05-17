@@ -1460,3 +1460,7 @@
 - 10.15 Pagination
 
 - 10.16 Restaurants
+
+- 10.17 Restaurant and Search
+
+- 10.18 Search part Two
