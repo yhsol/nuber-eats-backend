@@ -5,6 +5,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Like, Raw, Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import { CategoryInput, CategoryOutput } from './dtos/category.dto';
+import { CreateDishInput, CreateDishOutput } from './dtos/craete-dish.dto';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -224,7 +225,12 @@ export class RestaurantService {
     restaurantId,
   }: RestaurantInput): Promise<RestaurantOutput> {
     try {
-      const restaurant = await this.restaurantsRepository.findOne(restaurantId);
+      const restaurant = await this.restaurantsRepository.findOne(
+        restaurantId,
+        {
+          relations: ['menu'],
+        },
+      );
 
       if (!restaurant) {
         return { ok: false, error: 'Restaurant Not Found' };
@@ -269,5 +275,14 @@ export class RestaurantService {
         error: `Couldn't find Restaurants By ${query}`,
       };
     }
+  }
+
+  async createDish(
+    owner: User,
+    createDishInput: CreateDishInput,
+  ): Promise<CreateDishOutput> {
+    return {
+      ok: false,
+    };
   }
 }
