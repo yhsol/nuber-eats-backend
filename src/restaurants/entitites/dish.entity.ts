@@ -13,8 +13,8 @@ class DishOption {
   @Field(_ => [String], { nullable: true })
   choices?: string[];
 
-  @Field(_ => Int)
-  extra: number;
+  @Field(_ => Int, { nullable: true })
+  extra?: number;
 }
 
 @InputType('DishInputType', { isAbstract: true })
