@@ -1476,3 +1476,9 @@
 - 11.4 Order Entity
 
 - 11.5 Create Order part One
+
+- 11.6 Order Items
+
+- 11.7 Create Order part Two
+
+- 11.8 Create Order part Three
