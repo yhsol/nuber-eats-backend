@@ -26,6 +26,10 @@ export class OrderService {
     { restaurantId, items }: CreateOrderInput,
   ): Promise<CreateOrderOutput> {
     const restaurant = await this.restaurantRepository.findOne(restaurantId);
+    console.log(
+      'items: ',
+      items.map(item => item.options),
+    );
 
     if (!restaurant) {
       return {
@@ -33,19 +37,47 @@ export class OrderService {
         error: 'Restaurant not found',
       };
     }
-    items.forEach(async item => {
+
+    for (const item of items) {
       const dish = await this.dishRepository.findOne(item.dishId);
       if (!dish) {
-        // abort this whole thing
+        return { ok: false, error: 'Dish not found.' };
+      }
+      console.log(`Dish Price: ${dish.price}`);
+      for (const itemOption of item.options) {
+        const dishOption = dish.options.find(
+          dishOption => dishOption.name === itemOption.name,
+        );
+
+        if (dishOption) {
+          // dishOption 의 extra
+          if (dishOption.extra) {
+            console.log(
+              'dishOption.extra: ',
+              `${dishOption.name}: USD + ${dishOption.extra}`,
+            );
+          }
+        }
+
+        // dishOption 의 choices
+        const dishOptionChoice = dishOption.choices.find(optionChoice => {
+          return optionChoice.name === itemOption.choice;
+        });
+        if (dishOptionChoice?.extra) {
+          console.log(
+            'dishOptionChoice: ',
+            `${dishOptionChoice.name}: USD + ${dishOptionChoice.extra}`,
+          );
+        }
       }
 
-      await this.orderItemRepository.save(
-        this.orderItemRepository.create({
-          dish,
-          options: item.options,
-        }),
-      );
-    });
+      // await this.orderItemRepository.save(
+      //   this.orderItemRepository.create({
+      //     dish,
+      //     options: item.options,
+      //   }),
+      // );
+    }
     // const order = await this.orderRepository.save(
     //   this.orderRepository.create({
     //     customer,
