@@ -1486,3 +1486,5 @@
 - 11.9 Create Order part Four
 
 - 11.10 Create Order part Five
+
+- 11.11 Create Order part Six
