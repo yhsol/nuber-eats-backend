@@ -1538,3 +1538,14 @@
   req 가 undefined!
 
   subscription 에는 connection 이 있음.
+  req 가 있을 때는 기존 대로 리턴하고,
+  req 가 없을 때는 다르게 처리해주면 됨.
+
+  graphql-subscriptions 을 사용하는데,
+  `const pubsub = new PubSub();` 와 같이 정의해서 씀.
+  Subscription 메서드(`readyPotatos`)에서는 `pubsub.asyncIterator('hotPotatos')` 와 같이 정의해서 리스닝 할 수 있도록 하고,
+  해당 subscription 을 트리거 하는 함수를 정의 함.
+  트리거 하는 함수(`potatoReady`) 에서는
+  `pubsub.publish('hotPotatos', { readyPotatos: 'Your potato is ready.',});` 와 같이 트리거를 해줌.
+  이 때 트리거네임(`hotPotatos`) 는 Subscription 에서 정의한 트리거(`hotPotatos`) 와 같아야 하고,
+  payload 는 객체인데, 키 값을 Subscription 함수의 이름(`readyPotatos`) 로 설정해야 함.
