@@ -1517,3 +1517,24 @@
 
   - 작업 기간이 길어지니까 전에 작업했던것들이 가물가물..
     - 좀 더 속도를 내서 마무리를 한번 하고 정리를 좀 해야겠다
+
+- 12.1 Subscriptions part Two
+
+  - http 에는 request 가 있는데,
+    subscription 에는 request 가 없음.
+    그래서 기존 app.module.ts 의 설정 중 아래 부분에서 에러가 남.
+
+  ```ts
+    GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
+      autoSchemaFile: true,
+      context: ({ req }) => {
+        console.log('req: ', req);
+        return { user: req['user'] };
+      },
+    }),
+  ```
+
+  req 가 undefined!
+
+  subscription 에는 connection 이 있음.
