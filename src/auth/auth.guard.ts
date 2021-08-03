@@ -7,7 +7,7 @@ import { AllowedRoles } from './role.decorator';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
-  canActivate(context: ExecutionContext) {
+  canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<AllowedRoles>(
       'roles',
       context.getHandler(),
@@ -18,6 +18,8 @@ export class AuthGuard implements CanActivate {
 
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const user: User = gqlContext['user'];
+
+    console.log('gqlContext: ', gqlContext.token);
 
     // 메타데이터가 있는데 user가 없으면 false
     if (!user) return false;

@@ -1549,3 +1549,5 @@
   `pubsub.publish('hotPotatos', { readyPotatos: 'Your potato is ready.',});` 와 같이 트리거를 해줌.
   이 때 트리거네임(`hotPotatos`) 는 Subscription 에서 정의한 트리거(`hotPotatos`) 와 같아야 하고,
   payload 는 객체인데, 키 값을 Subscription 함수의 이름(`readyPotatos`) 로 설정해야 함.
+
+- 12.2 Subscription Authentication part One
