@@ -1551,3 +1551,5 @@
   payload 는 객체인데, 키 값을 Subscription 함수의 이름(`readyPotatos`) 로 설정해야 함.
 
 - 12.2 Subscription Authentication part One
+
+- 12.3 Subscription Authentication part Two
