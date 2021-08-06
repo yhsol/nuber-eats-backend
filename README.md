@@ -1555,8 +1555,12 @@
 - 12.3 Subscription Authentication part Two
 
 - 12.4 PUB_SUB
+
   - pubsub 은 애플리케이션에 하나만 있어야 함.
     - CommonModule 에 Global 로 정의
       - providers, exports 설정
     - app.modules.ts 에서 imports 에 설정
     - orders.resolver.ts 의 constructor 에서 Inject 해서 사용
+
+- 12.5 Subscription Filter
+  - Subscription 에서 원하는 Subscription 만 Listening 할 수 있도록 filter
