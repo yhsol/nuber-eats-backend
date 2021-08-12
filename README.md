@@ -1563,4 +1563,11 @@
     - orders.resolver.ts 의 constructor 에서 Inject 해서 사용
 
 - 12.5 Subscription Filter
+
   - Subscription 에서 원하는 Subscription 만 Listening 할 수 있도록 filter
+
+- 12.6 Subscription Resolve
+
+  - resolve 를 통해서 Subscription 으로 들어온 데이터를 원하는 형태로 return 할 수 있음.
+
+- 12.7 pendingOrders Subscription part One

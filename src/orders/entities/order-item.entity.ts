@@ -10,13 +10,14 @@ export class OrderItemOption {
   name: string;
 
   @Field(_ => String, { nullable: true })
-  choice?: String;
+  choice?: string;
 }
 
 @InputType('OrderItemInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
 export class OrderItem extends CoreEntity {
+  @Field(_ => Dish)
   @ManyToOne(_ => Dish, { nullable: true, onDelete: 'CASCADE' })
   dish: Dish;
   @Field(_ => [OrderItemOption], { nullable: true })
