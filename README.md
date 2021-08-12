@@ -1571,3 +1571,24 @@
   - resolve 를 통해서 Subscription 으로 들어온 데이터를 원하는 형태로 return 할 수 있음.
 
 - 12.7 pendingOrders Subscription part One
+
+- 12.8 pendingOrders Subscription part Two
+
+  - pubsub publish 할 때 payload 로 그냥 객체 하나가 아니라 다른 구조로 전달하게 되면, 받는 쪽에서 resolve 를 통해서 그 안에서 섭스크립션 메서드가 리턴하기로 한 값을 꺼내서 리턴할 수 있게 해줘야 함.
+
+    - Trigger
+
+    ```ts
+    await this.pubsub.publish(ORDER_SUBSCRIPTION.trigger.NEW_PENDING_ORDER, {
+      [ORDER_SUBSCRIPTION.method.pendingOrders]: {
+        order,
+        ownerId: restaurant.ownerId,
+      },
+    });
+    ```
+
+    - Subscription
+
+    ```ts
+    resolve: payload => payload[ORDER_SUBSCRIPTION.method.pendingOrders].order,
+    ```

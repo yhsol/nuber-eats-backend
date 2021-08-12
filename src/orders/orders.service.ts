@@ -91,7 +91,10 @@ export class OrderService {
       );
 
       await this.pubsub.publish(ORDER_SUBSCRIPTION.trigger.NEW_PENDING_ORDER, {
-        [ORDER_SUBSCRIPTION.method.pendingOrders]: order,
+        [ORDER_SUBSCRIPTION.method.pendingOrders]: {
+          order,
+          ownerId: restaurant.ownerId,
+        },
       });
 
       return { ok: true };
