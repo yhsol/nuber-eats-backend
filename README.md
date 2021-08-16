@@ -1592,3 +1592,9 @@
     ```ts
     resolve: payload => payload[ORDER_SUBSCRIPTION.method.pendingOrders].order,
     ```
+
+- 12.9 cookedOrders
+  - 조건이 많아지니까 헷갈린다.
+  - editOrder 를 하는데 자꾸 허용되지 않아서 헤멧다.
+  - 안되는 조건이 여러개라서 하나하나 살펴봐야했음
+  - 에러를 더 상세히 잘 알려줄 수 있도록 쓰면 좋을 듯.

@@ -4,8 +4,10 @@ export const PUB_SUB = 'PUB_SUB';
 export const ORDER_SUBSCRIPTION = {
   method: {
     pendingOrders: 'pendingOrders',
+    cookedOrders: 'cookedOrders',
   },
   trigger: {
     NEW_PENDING_ORDER: 'NEW_PENDING_ORDER',
+    NEW_COOKED_ORDER: 'NEW_COOKED_ORDER',
   },
 };

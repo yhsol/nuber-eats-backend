@@ -70,4 +70,12 @@ export class OrderResolver {
       ORDER_SUBSCRIPTION.trigger.NEW_PENDING_ORDER,
     );
   }
+
+  @Subscription(_ => Order, {})
+  @Role(['Delivery'])
+  cookedOrders() {
+    return this.pubsub.asyncIterator(
+      ORDER_SUBSCRIPTION.trigger.NEW_COOKED_ORDER,
+    );
+  }
 }

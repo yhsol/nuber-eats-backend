@@ -249,12 +249,27 @@ export class OrderService {
         };
       }
 
-      await this.orderRepository.save([
-        {
-          id: orderId,
-          status: orderStatus,
-        },
-      ]);
+      await this.orderRepository.save({
+        id: orderId,
+        status: orderStatus,
+      });
+
+      // trigger cookedOrders subscription
+      if (user.role === UserRole.Owner) {
+        if (orderStatus === OrderStatus.Cooked) {
+          await this.pubsub.publish(
+            ORDER_SUBSCRIPTION.trigger.NEW_COOKED_ORDER,
+            {
+              // create 하는게 아니라 그냥 edit 한 뒤에 save 하는 경우에는 전체 entity를 return 하지 않음.
+              // 그렇기 때문에 기존 order 에 변경된 status 를 반영하여 보냄.
+              [ORDER_SUBSCRIPTION.method.cookedOrders]: {
+                ...order,
+                orderStatus,
+              },
+            },
+          );
+        }
+      }
 
       return {
         ok: true,
