@@ -1607,3 +1607,9 @@
 - 12.12 takeOrder
 
   - drvier 가 존재하는 주문에 다시 driver 를 변경하기 위해 dto 에 args 추가 - 잘 작동하는 것 확인!
+
+- 13.0 Payment Introduction
+  - paddle 을 사용할 것
+    - 디지털 제품만 거래할 수 있음
+    - 회사, 개인인지에 상관없이 사용할 수 있음
+    - 백엔드에서 많은 작업을 할 필요는 없음
