@@ -1616,9 +1616,12 @@
     - 백엔드에서 많은 작업을 할 필요는 없음
 
 - 13.1 Payment Module
+
   - Payment Module
   - Payment Entity
     - CoreEntity
     - transactionId, user, userId, restaurant, restaurantId
     - DB
       - id, createdAt, updatedAt, transactionId, userId, restaurantId
+
+- 13.2 createPayment part One
