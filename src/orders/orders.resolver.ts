@@ -80,7 +80,23 @@ export class OrderResolver {
     );
   }
 
-  @Subscription(_ => Order)
+  @Subscription(_ => Order, {
+    filter: (
+      { orderUpdates }: { orderUpdates: Order },
+      { input }: { input: OrderUpdatesInput },
+      { user }: { user: User },
+    ) => {
+      if (
+        orderUpdates.driverId !== user.id &&
+        orderUpdates.customerId !== user.id &&
+        orderUpdates.restaurant.ownerId !== user.id
+      ) {
+        return false;
+      }
+
+      return orderUpdates.id === input.id;
+    },
+  })
   @Role(['Any'])
   orderUpdates(@Args('input') orderUpdatesInput: OrderUpdatesInput) {
     return this.pubsub.asyncIterator(

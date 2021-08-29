@@ -1601,3 +1601,5 @@
   - 에러를 더 상세히 잘 알려줄 수 있도록 쓰면 좋을 듯.
 
 - 12.10 orderUpdates part One
+
+- 12.11 orderUpdates
