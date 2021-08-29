@@ -5,9 +5,11 @@ export const ORDER_SUBSCRIPTION = {
   method: {
     pendingOrders: 'pendingOrders',
     cookedOrders: 'cookedOrders',
+    orderUpdates: 'orderUpdates',
   },
   trigger: {
     NEW_PENDING_ORDER: 'NEW_PENDING_ORDER',
     NEW_COOKED_ORDER: 'NEW_COOKED_ORDER',
+    NEW_ORDER_UPDATE: 'NEW_ORDER_UPDATE',
   },
 };

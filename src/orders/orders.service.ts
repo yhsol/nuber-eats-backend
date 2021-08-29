@@ -202,9 +202,7 @@ export class OrderService {
     { id: orderId, status: orderStatus }: EditOrderInput,
   ): Promise<EditOrderOutput> {
     try {
-      const order = await this.orderRepository.findOne(orderId, {
-        relations: ['restaurant'],
-      });
+      const order = await this.orderRepository.findOne(orderId);
 
       if (!order) {
         return {
@@ -254,6 +252,11 @@ export class OrderService {
         status: orderStatus,
       });
 
+      const newOrder = {
+        ...order,
+        orderStatus,
+      };
+
       // trigger cookedOrders subscription
       if (user.role === UserRole.Owner) {
         if (orderStatus === OrderStatus.Cooked) {
@@ -262,14 +265,15 @@ export class OrderService {
             {
               // create 하는게 아니라 그냥 edit 한 뒤에 save 하는 경우에는 전체 entity를 return 하지 않음.
               // 그렇기 때문에 기존 order 에 변경된 status 를 반영하여 보냄.
-              [ORDER_SUBSCRIPTION.method.cookedOrders]: {
-                ...order,
-                orderStatus,
-              },
+              [ORDER_SUBSCRIPTION.method.cookedOrders]: newOrder,
             },
           );
         }
       }
+
+      await this.pubsub.publish(ORDER_SUBSCRIPTION.trigger.NEW_ORDER_UPDATE, {
+        [ORDER_SUBSCRIPTION.method.orderUpdates]: newOrder,
+      });
 
       return {
         ok: true,
