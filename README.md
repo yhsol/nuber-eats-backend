@@ -1661,3 +1661,4 @@
     - 인터벌로 30초 간격으로 실행하고 싶을 경우 interval 을 사용
 
 - 13.6 Promoting Restaurants
+  - isPromoted 에 따른 ordering
