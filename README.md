@@ -1627,6 +1627,7 @@
 - 13.2 createPayment part One
 
 - 13.3 createPayment part Two
+
   - save 를 다른 repository 에 하는 것으로 해놔가지고 고생함
   - 잘못
     ```ts
@@ -1649,3 +1650,5 @@
     );
     ```
   - `paymentRepository` 에다가 save 해야 하는데, 계속 `restaurantRepository` 에다가 save 해가지고 에러 계속 남.
+
+- 13.4 getPayments Resolver
