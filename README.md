@@ -1652,3 +1652,9 @@
   - `paymentRepository` 에다가 save 해야 하는데, 계속 `restaurantRepository` 에다가 save 해가지고 에러 계속 남.
 
 - 13.4 getPayments Resolver
+
+- 13.5 Task Scheduling is Awesome
+  - Cron 에 설정한 매 '' 분 은 그 시점을 이야기 함
+    - 예를 들어 '30 * * * * *' 으로 표현하면 매 '30초' 마다 실행됨.
+      30초 마다 인터벌로 실행되는 것이 아니라 :30 일 때 실행되는 것.
+    - 인터벌로 30초 간격으로 실행하고 싶을 경우 interval 을 사용
