@@ -64,4 +64,12 @@ export class Restaurant extends CoreEntity {
     order => order.restaurant,
   )
   orders: Order[];
+
+  @Field(_ => Boolean)
+  @Column({ default: false })
+  isPromoted: boolean;
+
+  @Field(_ => Date, { nullable: true })
+  @Column({ nullable: true })
+  promotedUntil?: Date;
 }

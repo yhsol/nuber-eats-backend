@@ -180,6 +180,9 @@ export class RestaurantService {
         },
         take: 25,
         skip: (page - 1) * 25,
+        order: {
+          isPromoted: 'DESC',
+        },
       });
       // category.restaurants = restaurants; // restaurant 를 따로 Field 를 만들어서 내보내는 것으로 수정
 
@@ -209,6 +212,9 @@ export class RestaurantService {
       ] = await this.restaurantsRepository.findAndCount({
         skip: (page - 1) * 25,
         take: 25,
+        order: {
+          isPromoted: 'DESC',
+        },
       });
 
       return {
